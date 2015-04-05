@@ -10,6 +10,7 @@ image:
   teaser: /2013/12/leak.jpg
   thumb: 
 ads: false
+comments: true
 ---
 
 A crash report arrived at my desk the other day. The system crashed because it ran out of memory. And the major memory consumer was a `WeakHashMap`. Very interesting, since `WeakHashMaps` are usually free memory when the content is not needed any more.

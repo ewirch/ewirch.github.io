@@ -10,6 +10,7 @@ image:
   teaser: /2013/12/executor.jpg
   thumb: 
 ads: false
+comments: true
 ---
 
 Java 1.5 introduced the `Executor` framework. In summery: if you have some tasks and you want them to be processed in parallel by a couple of threads, then a `Executor` is the solution you want to look for. But there are some surprising caveats which may lead to problems. And they are hard to diagnose.

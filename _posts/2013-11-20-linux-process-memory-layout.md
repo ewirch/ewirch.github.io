@@ -10,6 +10,7 @@ image:
   teaser: /2013/11/memory-layout.jpg
   thumb: 
 ads: false
+comments: true
 ---
 
 This article describes how the memory structure of each Linux process does look like.

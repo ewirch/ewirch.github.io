@@ -10,6 +10,7 @@ image:
   teaser: /2014/01/rainbow-cubes.jpg
   thumb: 
 ads: false
+comments: true
 ---
 
 I stumbled upon an interesting OpenGL slow down issue on [stackoverflow.com: Curious slowdown in opengl when using instanced rendering][stack-question]. The author created a program which would render 20 x 20 x 20 cubes in two different ways: [indexed drawing][indexed-drawing] and [instanced drawing][instanced-drawing]. When using indexed drawing performance seemed fine. But after switching to instanced drawing it broke down. But only in a special case. As described by the question author:

@@ -11,6 +11,7 @@ image:
   thumb: 
 ads: false
 excerpt: How should equals() behave in case of polymorphic classes? What are the pitfalls here?
+comments: true
 ---
 
 Let's start by having a small introduction. The mother of all Java classes -- `Object` -- does define a `equals()` method, which is meant to return true if the passed instance is equal to the current instance. The default implementation is limited to comparing references. So it will only return `true` when the current and the passed object are the same. The `equals()` method is meant to be overridden by extending classes with meaningful logic. The implementation has to obey some requirements (from javadoc on [Object.equals()]):

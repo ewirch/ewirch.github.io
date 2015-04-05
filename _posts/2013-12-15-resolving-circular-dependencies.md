@@ -10,6 +10,7 @@ image:
   teaser: /2013/12/circular.jpg
   thumb: 
 ads: false
+comments: true
 ---
 I stumbled several times already upon situations where I created a circular dependency between two classes. A circular dependency is bad design in general.
 

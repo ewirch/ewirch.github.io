@@ -10,6 +10,7 @@ image:
   teaser: /2013/11/its-not-my-code.jpg
   thumb: 
 ads: false
+comments: true
 ---
 
 Actually this blog post is not about Google. And it is even not about copying code. But it is indeed about code which I did not write.
