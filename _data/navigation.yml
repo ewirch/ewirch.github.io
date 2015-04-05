@@ -1,0 +1,11 @@
+# Site navigation links
+
+- title: Articles
+  url: /articles/
+  excerpt: "Examples of long form posts."
+  image: 400x250.gif
+
+- title: About
+  url: /about/
+  excerpt: "All about Skinny Bones for Jekyll."
+  image: 400x250.gif
