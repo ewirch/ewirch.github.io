@@ -42,7 +42,7 @@ There are many reasons why your application may experience a frame skip:
 : Background processes occupy a big chunk of CPU time leaving your application insufficient CPU time.
 
 *Foreign GPU load*
-: Similar as previous but this time GPU releated.
+: Similar as previous but this time GPU related.
 
 *Failing to process CPU and GPU work concurrently*
 : GPU and CPU are able to work concurrently. If your application waits for the vsync, after finishing the last frame, CPU time is wasted, which is available during GPU processing.
@@ -83,13 +83,13 @@ If you see the CPU sitting in the lanes of other processes than yours, you know 
 Not so common, but possible. If the graphics card queue is full but not with packets of your process, check which process issued them.
 
 ### Failing to process CPU and GPU work concurrently
-If your application has a lot of CPU work to do, you'd better use every bit of CPU time available. If you rely on the 'present' command to block and to wake up your process once the vsync occured, you're not using important milliseconds of CPU. I'll cover the topic on how to synchronize to vsync without relying on blocking 'present' command in a later article.
+If your application has a lot of CPU work to do, you'd better use every bit of CPU time available. If you rely on the 'present' command to block and to wake up your process once the vsync occurred, you're not using important milliseconds of CPU. I'll cover the topic on how to synchronize to vsync without relying on blocking 'present' command in a later article.
 
 ### Bad vsync synchronization
 If you try to not rely on blocking 'present' command and do it wrong, it won't be any better than relying on 'present'. I'll cover this in the same future article as the previous topic.
 
 ### Locks
-It's possible you're your own enemy, if you try to do network or file system operations in the same thread you do the graphics stuff. But it's also possible that you avoided those obviously blocking APIs but your application still was blocked by the system. If you see that your graphics thread wakes up too late after vsync to do its job, you need to analyse what it was waiting on. The second part of this article will explain such a situation in detail.
+It's possible you're your own enemy, if you try to do network or file system operations in the same thread you do the graphics stuff. But it's also possible that you avoided those obviously blocking APIs but your application still was blocked by the system. If you see that your graphics thread wakes up too late after vsync to do its job, you need to analyze what it was waiting on. The second part of this article will explain such a situation in detail.
 
 
 ## Blocked by the System
@@ -231,7 +231,7 @@ Examining the stack traces (don't forget to setup symbol path and tell WPA to lo
 
 (Note that WPA presents the stack traces the other way round as GPUView. The oldest frame is at the top and the youngest frame is at the bottom. So upper frames invoked lower frames.)
 
-Bulls eye! So `flux.exe` told the system to set the gamma ramp. [f.lux] is a small back ground tool which adjusts the colour temperature of your screen according to sun rise and sun set times. This shows very nicely that one has to consider everything when analysing problems. Even though f.lux consumed no CPU and no GPU time it was responsible for the frame skip. 
+Bulls eye! So `flux.exe` told the system to set the gamma ramp. [f.lux] is a small back ground tool which adjusts the color temperature of your screen according to sun rise and sun set times. This shows very nicely that one has to consider everything when analyzing problems. Even though f.lux consumed no CPU and no GPU time it was responsible for the frame skip. 
 
 *[WPR]: Windows Performance Recorder
 *[WPA]: Windows Performance Analyzer
