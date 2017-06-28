@@ -1,11 +1,17 @@
 ---
-layout: archive
+layout: home
 permalink: /
-title: "Latest Posts"
+image:
+  feature: wood-texture-1600x800.jpg
 ---
 
+
 <div class="tiles">
-{% for post in site.posts %}
-	{% include post-grid.html %}
-{% endfor %}
-</div><!-- /.tiles -->
+	{% for post in site.categories.articles limit:4 %}
+	  {% include post-grid.html %}
+	{% endfor %}
+</div>
+
+<p style="clear:both;"/>
+
+[More Articles...]({{site.url}}/articles/)

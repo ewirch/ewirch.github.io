@@ -295,6 +295,10 @@ label {
 	}
 }
 
+abbr {
+	border-bottom: 1px dashed #c2c2c2;
+}
+
 textarea,
 #{$all-text-inputs},
 select,

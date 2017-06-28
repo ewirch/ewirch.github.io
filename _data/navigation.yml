@@ -1,6 +1,10 @@
 # Site navigation links
 
-- title:
-  url:
-  excerpt:
-  image:
+- title: Articles
+  url: /articles/
+  excerpt: "Examples of long form posts."
+  image: 400x250.gif
+
+- title: About
+  url: /about/
+  excerpt: "All about Skinny Bones for Jekyll."

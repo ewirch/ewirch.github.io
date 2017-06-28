@@ -21,7 +21,9 @@ layout: default
 				{{ content }}
 				<hr />
 				<footer class="page-footer">
+					{% comment %}
 					{% if page.categories %}{% include page-author.html %}{% endif %}
+					{% endcomment %}
 					{% if page.share != false %}{% include share-this.html %}{% endif %}
 					{% include page-meta.html %}
 				</footer><!-- /.footer -->

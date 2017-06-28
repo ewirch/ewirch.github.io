@@ -1,22 +1,22 @@
 # Site wide configuration
 
-title: "My Site"
-description: "This is a description of my awesome site."
-logo: # 120x120 px default image used for Twitter summary card
-teaser: # 400x250 px default teaser image used in image archive grid
-locale: en
-url:
-feed:
-  path: atom.xml
+title: int13
+description: "A place for knowledge, software craftsmanship, performance and stability."
+logo: 120x120.gif
+teaser: 400x250.gif
+locale: en_US
+url: https://ewirch.github.io
+analytics: true
 
 # Jekyll configuration
 
 sass:
   sass_dir: _sass
   style: compressed
-permalink: /:categories/:title/
+permalink: /:year/:month/:title.html
 kramdown:
   toc_levels: 1..2
+# highlighter war vorher pygments
 highlighter: rouge
 gems:
   - jekyll-sitemap
@@ -26,15 +26,13 @@ gems:
 
 # Site owner
 owner:
-  name:
-  email:
-  twitter:
-  google:
-    ad-client:
-    ad-slot:
-  bio:
+  name: Eduard Wirch
+  web: https://ewirch.github.io/
+  email: wirch.eduard@gmail.com
   avatar: bio-photo.jpg # 160x160 px image for author byline
-  disqus-shortname:
+  google:
+    plus: +EduardWirch
+  disqus-shortname: ewirch
 
 
 include:
@@ -62,3 +60,4 @@ exclude:
   - package.json
   - spec
   - tmp
+  - readme.txt
