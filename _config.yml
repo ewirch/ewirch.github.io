@@ -16,12 +16,11 @@ sass:
 permalink: /:year/:month/:title.html
 kramdown:
   toc_levels: 1..2
-# highlighter war vorher pygments
 highlighter: rouge
 gems:
-  - jekyll-sitemap
-  - jekyll-gist
-  - jekyll-feed
+#  - jekyll-sitemap
+#  - jekyll-gist
+#  - jekyll-feed
 
 
 # Site owner
