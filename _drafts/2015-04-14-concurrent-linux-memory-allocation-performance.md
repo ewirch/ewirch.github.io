@@ -8,6 +8,7 @@ tags: [tags]
 image:
   feature: 
   teaser: /2014/03/stutter.jpg
+  path: /2014/03/stutter.jpg
   thumb: 
 ads: false
 comments: true

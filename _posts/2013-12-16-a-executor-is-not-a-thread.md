@@ -8,6 +8,7 @@ tags: [java, error handling, ExecutorService, pitfalls]
 image:
   feature: 
   teaser: /2013/12/executor.jpg
+  path: /2013/12/executor.jpg
   thumb: 
 ads: false
 comments: true

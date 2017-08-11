@@ -8,6 +8,7 @@ tags: [java, memory, memory leaks, pitfalls]
 image:
   feature: 
   teaser: /2013/12/leak.jpg
+  path: /2013/12/leak.jpg
   thumb: 
 ads: false
 comments: true

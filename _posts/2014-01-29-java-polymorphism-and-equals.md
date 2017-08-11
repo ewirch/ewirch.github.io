@@ -8,6 +8,7 @@ tags: [java,core,polymorphism]
 image:
   feature: 
   teaser: /2014/01/equals.jpg
+  path: /2014/01/equals.jpg
   thumb: 
 ads: false
 excerpt: How should equals() behave in case of polymorphic classes? What are the pitfalls here?

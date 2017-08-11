@@ -8,6 +8,7 @@ tags: [java, concurrency, core, jmm, memory-model, synchronization, threads]
 image:
   feature: 
   teaser: /2014/03/synchronize.jpg
+  path: /2014/03/synchronize.jpg
   thumb: 
 ads: false
 comments: true

@@ -8,6 +8,7 @@ tags: [java, core, collections, pitfall]
 image:
   feature: 
   teaser: /2015/04/collection.jpg
+  path: /2015/04/collection.jpg
   thumb: 
 ads: false
 comments: true

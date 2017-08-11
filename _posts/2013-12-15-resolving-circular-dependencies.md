@@ -8,6 +8,7 @@ tags: [c++, code style]
 image:
   feature: 
   teaser: /2013/12/circular.jpg
+  path: /2013/12/circular.jpg
   thumb: 
 ads: false
 comments: true

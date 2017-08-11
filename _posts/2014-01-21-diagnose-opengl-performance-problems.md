@@ -8,6 +8,7 @@ tags: [opengl, performance, fill rate limitation, gpuview, wpr]
 image:
   feature: 
   teaser: /2014/01/rainbow-cubes.jpg
+  path: /2014/01/rainbow-cubes.jpg
   thumb: 
 ads: false
 comments: true

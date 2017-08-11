@@ -8,6 +8,7 @@ tags: [directx, dwm, dxgi, frame-skip, gpuview, opengl, performance, stutter, wp
 image:
   feature: 
   teaser: /2014/03/stutter.jpg
+  path: /2014/03/stutter.jpg
   thumb: 
 ads: false
 comments: true

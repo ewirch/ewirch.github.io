@@ -8,6 +8,7 @@ tags: [code style, eclipse, java, sonar]
 image:
   feature: 
   teaser: /2013/11/its-not-my-code.jpg
+  path: /2013/11/its-not-my-code.jpg
   thumb: 
 ads: false
 comments: true

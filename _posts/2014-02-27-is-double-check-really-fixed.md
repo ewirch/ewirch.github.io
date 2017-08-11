@@ -8,6 +8,7 @@ tags: [java,core,cuncurrency,memory-model]
 image:
   feature: 
   teaser: /2014/02/doublecheck.jpg
+  path: /2014/02/doublecheck.jpg
   thumb: 
 ads: false
 comments: true

@@ -8,6 +8,7 @@ tags: [java, core, linux, memory]
 image:
   feature: 
   teaser: /2013/11/memory-layout.jpg
+  path: /2013/11/memory-layout.jpg
   thumb: 
 ads: false
 comments: true
