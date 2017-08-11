@@ -3,16 +3,11 @@ Erfordert: Ruby, RubyGems (https://jekyllrb.com/docs/installation/#requirements)
 GitHub erkennt automatisch Jekyll-Dateien und generiert die Seite selber.
 Vorlage: https://github.com/mmistakes/skinny-bones-jekyll/
 
-Lokalen http-Server starten: bundle exec jekyll serve
+Seite bauen: bundle exec jekyll build
+Lokalen http-Server starten: bundle exec jekyll serve  --config _config.yml,_config-dev.yml
+Die Config-Parameter sind dazu da, dass die Links auf localhost zeigen.
 
+Immer wenn sich Dependencies ändern:
+bundle update
+bundle install
 
-Next Steps
-==========
-- Note:
-	C:\src\blog: ewirch.io old
-	C:\src\blog-skinny-bones-master: repo copy +2 Branches
-		skinny-bones-template: unveränderte Skinny-Bones-Master Kopie
-		ewirch-io: Änderungen von ewirch.io old auf dem neuen Template angewandt
-- blog-skinny-bones-master starten.
-- Original Skinny-Bones starten und nach Unterschieden sehen.
-- Ungenutztes Zeug entfernen.

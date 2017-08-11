@@ -1,5 +1,5 @@
 # Site wide configuration
-url: 
+url: ""
 analytics: false
 owner:
   disqus-shortname: 

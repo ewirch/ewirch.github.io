@@ -2,9 +2,9 @@
 
 - title: Articles
   url: /articles/
-  excerpt: "Examples of long form posts."
+  excerpt: "All articles."
   image: 400x250.gif
 
 - title: About
   url: /about/
-  excerpt: "All about Skinny Bones for Jekyll."
+  excerpt: "About the author."
