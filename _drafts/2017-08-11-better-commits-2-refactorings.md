@@ -1,6 +1,6 @@
 ---
 layout: article
-title: "Better Commits - Part 2 - Refactoring"
+title: "Better Commits - Part 2 - Refactorings"
 categories: articles
 date: 2017-08-11
 modified: 2017-08-11
