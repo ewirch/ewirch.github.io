@@ -50,7 +50,7 @@ synchronized (L1) {
 
 {%endhighlight%}
 
-Even though it uses synchronization and even if T2 runs after T1 finished, T2 is not guaranteed to see the new value. The JMM guarantees this only for the case when synchronizing to the same monitor (volatile and final are also possible, they will be discussed later):
+Even though it uses synchronization and even if T2 runs after T1 finished, T2 is not guaranteed to see the new value. The JMM guarantees this only for the case when synchronizing on the same monitor (volatile and final are also possible, they will be discussed later):
 
 {%highlight java%}
 T1                                  T2
