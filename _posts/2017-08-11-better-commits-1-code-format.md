@@ -19,7 +19,15 @@ Does anyone see the real change?
 
 ![diff with format]({{site.url}}/images/2017/08/better-commits1-format-diff.png)
 
-The diff contains a lot of noise. It creates too much cognitive overhead while parsing. I often have to review changes like this. Code formatting rules which are used by the whole team are important. But it still happens. Maybe the committer forgot to format a file after he applied changes. Or maybe the formatting rules were changed after the file was creating. Touching the file again re-formats it completely.
+I spent many years reading source history and reviewing changes of others. I find that we often make it unnecessarily hard to read the changes. Important changes are mixed with less important, maybe unrelated changes. Multiple logic changes are committed together. Logic changes are mixed with refactorings. Commits split by files. Commits undoing changes done few commits before. I often find myself digging the commit history to find out why a particular change was made. A unclear commit history makes this hard and costs productivity. Remember the WORM principle: write once, read many. You will read the code over and over again in the future. Also when reviewing a change (pull request), it's hard to review unclean commit history. Modern review tools allow to review the changes separated by commits. If the author invested some effort in nice change splitting, the review process is faster, more efficient and maybe more profitable. Many unimportant changes wear down the reviewer's attention. He might not notice problematic changes. Or maybe to tired, after reviewing 30 classes, for a good improvement idea.
+
+I'd like to present some ideas and techniques which will improve your commit history. This post is part of a multi post series.
+
+- [Better Commits - Part 1 - Code Format]({{site.url}}/2017/08/better-commits-1-code-format.html)
+- [Better Commits - Part 2 - Refactorings]({{site.url}}/2017/08/better-commits-2-refactorings.html)
+
+
+The diff above contains a lot of noise. It creates too much cognitive overhead while parsing. I often have to review changes like this. Code formatting rules which are used by the whole team are important. But it still happens. Maybe the committer forgot to format a file after he applied changes. Or maybe the formatting rules were changed after the file was creating. Touching the file again re-formats it completely.
 
 How about you review this change instead?
 
