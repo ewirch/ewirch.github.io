@@ -15,12 +15,13 @@ comments: true
 ---
 
 
-In the first part [Better Commits - Part 1 - Code Format]({{site.url}}/2017/08/better-commits-1-code-format.html) I presented a way how you can make your code history easier to read by committing format changes separately. This time I'll show how to handle refactorings. I will make heavy use of Git commands. If you use a different SCM or a Git UI, it's possible that you can map the steps to actions of your tool.
+In the first part [Better Commits - Part 1 - Code Format][] I presented a way how you can make your code history easier to read by committing format changes separately. This time I'll show how to handle refactorings. I will make heavy use of Git commands. If you use a different SCM or a Git UI, it's possible that you can map the steps to actions of your tool.
 
  This post is part of a multi post series.
 
-- [Better Commits - Part 1 - Code Format]({{site.url}}/2017/08/better-commits-1-code-format.html)
-- [Better Commits - Part 2 - Refactorings]({{site.url}}/2017/08/better-commits-2-refactorings.html)
+- [Better Commits - Part 1 - Code Format][]
+- [Better Commits - Part 2 - Refactorings][]
+- [Better Commits - Part 3 - Review Changes][]
 
 While working on a feature or bug fix I often find code which needs some love. Or I have to apply some refactorings to prepare the code for the new feature. It makes the commit history easier to read (and thus makes also code reviews easier) if the refactoring steps are committed separately. It reduces your cognitive overhead while parsing the changes. This way you group syntactic changes to commits.
 Just imagine a rename of a highly used class. The change will affect a lot of files and a lot of lines. But the change itself is simple. If you don't split your changes into commits, then the rename change is mixed with feature implementation. The reviewer will have a hard time deciding line by line if the change is fine. If you commit the rename separately, the reviewer can quickly skim over the rename commit and concentrate on the logic change commit. Or if you get back to this commit in a couple of months, trying to find out what happened, you will have to check a lot of irrelevant lines to find the important changes.
@@ -29,7 +30,7 @@ But - Murphy knows - you only find code which needs refactoring after you alread
 
 # Stage/Fixup
 
-If it's a simple refactoring -- so you can easily tell which lines are affected by the refactoring -- then you can select the hunks to commit manually. In Git language: you're staging (or adding to index) the changes. Go ahead and [read](https://git-scm.com/book/en/v2/Getting-Started-Git-Basics#_the_three_states) a [bit about](https://githowto.com/staging_changes) staging [changes in Git](https://softwareengineering.stackexchange.com/questions/119782/what-does-stage-mean-in-git), if you are not familiar with that topic yet.
+If it's a simple refactoring -- so you can easily tell which lines are affected by the refactoring -- then you can select the hunks to commit manually. In Git language: you're staging (or adding to index) the changes. Go ahead and [read][] a [bit about][] staging [changes in Git][], if you are not familiar with that topic yet.
 
 This way your logic change remains uncommitted in the working copy, while the refactoring change is committed away. If you find the next refactoring while progressing, repeat the process. But if you notice something which belongs to the refactoring you already committed, you should commit a "fix-up". You do this by committing the change with a commit message which starts with the string "fixup!" and the first line of the commit message the change belongs to. For example, if you committed a refactoring with the commit message "small refactorings", then the new commit message should read "fixup! small refactorings". This even works if you committed other changes in between. Like this:
 
@@ -39,7 +40,7 @@ This way your logic change remains uncommitted in the working copy, while the re
 147e690 fixup! small refactoring
 ```
 
-Why do we do this? Git has a powerful feature called [rebasing](https://git-scm.com/book/de/v1/Git-Branching-Rebasing). It allows you to change or rearrange commits. Using this commit message syntax and a command line flag, Git will automatically reorder the commits for us. To do this, you start a [interactive rebase](https://git-scm.com/book/id/v2/Git-Tools-Rewriting-History) and pass the parameter `--autosquash`:
+Why do we do this? Git has a powerful feature called [rebasing][]. It allows you to change or rearrange commits. Using this commit message syntax and a command line flag, Git will automatically reorder the commits for us. To do this, you start a [interactive rebase][] and pass the parameter `--autosquash`:
 
 ```text
 > git rebase -i --autosquash 87517e9^
@@ -87,3 +88,11 @@ It is important that you perform exactly the same refactoring in the second step
 
 I've shown two ways here which make it easier to group changes semantically. This makes code reviews and reading the history easier. Its a little bit more effort compared to committing everything in one change, but it pays off in my opinion.
 
+[Better Commits - Part 1 - Code Format]: {{site.url}}{% post_url 2017-08-11-better-commits-1-code-format %}
+[Better Commits - Part 2 - Refactorings]: {{site.url}}{% post_url 2017-08-31-better-commits-2-refactorings %}
+[Better Commits - Part 3 - Review Changes]: {{site.url}}{% post_url 2017-09-09-better-commits-3-review-changes %}
+[read]: https://git-scm.com/book/en/v2/Getting-Started-Git-Basics#_the_three_states
+[bit about]: https://githowto.com/staging_changes
+[changes in Git]: https://softwareengineering.stackexchange.com/questions/119782/what-does-stage-mean-in-git
+[rebasing]: https://git-scm.com/book/de/v1/Git-Branching-Rebasing
+[interactive rebase]: https://git-scm.com/book/id/v2/Git-Tools-Rewriting-History
