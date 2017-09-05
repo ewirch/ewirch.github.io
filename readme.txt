@@ -12,6 +12,9 @@ Immer wenn sich Dependencies ändern:
 bundle update
 bundle install
 
+Links validieren:
+bundle exec htmlproofer ./_site/ --only-4xx
+
 Erweiterte Markdown-Syntax
 ==========================
 
