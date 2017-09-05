@@ -22,7 +22,7 @@ First step to find a problem is to reproduce it. So I copied the example code, f
 
 Fragment shader for both drawing methods:
 
-{% highlight glsl %}
+```glsl
 #version 330 core
 
 in vec3 fragmentColor;
@@ -31,11 +31,11 @@ out vec3 color;
 void main() {
   color = fragmentColor;
 }
-{% endhighlight %}
+```
 
 The vertex shader for basic indexed drawing:
 
-{% highlight glsl %}
+```glsl
 #version 330 core
 
 layout(location = 0) in vec3 vertexPosition;
@@ -48,11 +48,11 @@ void main(){
   gl_Position = MVP * vec4((vertexPosition), 1);
   fragmentColor = vertexColor;
 }
-{% endhighlight %}
+```
 
 The vertex shader for instanced drawing:
 
-{% highlight glsl %}
+```glsl
 #version 330 core
 
 layout(location = 0) in vec3 vertexPosition;
@@ -67,7 +67,7 @@ void main(){
   gl_Position = MVP * vec4((vertexPosition + translation), 1);
   fragmentColor = vertexColor;
 }
-{% endhighlight %}
+```
 
 With those changes I was able to confirm the questions claim. The performance of the indexed drawing was fine. The performance of the instanced drawing method was horrible. It not only rendered extremely slowly it also stalled the whole computer. The cpu load was nearly at 0%. Since the program stalled the whole computer the bottleneck must have been either some kind of a system wide lock (software or hardware lock) or a resource limitation.
 
@@ -103,11 +103,11 @@ The strange cube was there in both versions. But in my rewrite it got visible. T
 
 I continued replacing parts of the program until the problem disappeared. And also the cube disappeared! I reverted my last change and realized that it was a bug in the code triggering the problem, not some strange OpenGL behaviour. This is the buggy line drawing the cubes:
 
-{% highlight c %}
+```c
 glDrawElementsInstanced(GL_TRIANGLES, sqIndice.size(), GL_UNSIGNED_INT, (GLvoid*) (0), latticePoints.size());
 This is the line from my rewrite:
 glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (GLvoid*)NULL, gridCoordinates.size()/3);
-{% endhighlight %}
+```
 
 `glDrawElementsInstanced` expects the count of instances (cubes) to draw not the count of array elements. So instead of drawing 8000 cubes --- as it was meant to --- it drew 24000 cubes. But that's not the whole story. ;)
 
@@ -134,7 +134,7 @@ So the NVS160M is able to move 5,6GBytes per second (I'm ignoring the memory typ
 
 So here's the culprit: graphic card memory speed. Or: the bug. Depends on the perspective. ;)
 
-For the vigilant reader of the original stackoverflow.com question: the enabled multisampling surely took it's tall as well. 
+For the vigilant reader of the original stackoverflow.com question: the enabled multisampling surely took it's toll as well. 
 
 [stack-question]: http://stackoverflow.com/questions/17842578/curious-slowdown-in-opengl-when-using-instanced-rendering
 [indexed-drawing]: https://www.opengl.org/wiki/Vertex_Rendering#Basic_Drawing

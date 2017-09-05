@@ -27,17 +27,16 @@ In tech gibberish the Java Language Specification states that a thread is only g
 
 Example (`globalInt == 0` at the beginning):
 
-{%highlight java%}
+```text
 T1                                  T2
 _______________________________________________________________________
 globalInt = 3;
                                     int x = globalInt; // may be 0 or 3
-
-{%endhighlight%}
+```
 
 The Java Memory Model does not define what T2 is going to see. Now with synchronization but different monitors:
 
-{%highlight java%}
+```text
 T1                                  T2
 _______________________________________________________________________
 synchronized (L1) {
@@ -47,12 +46,11 @@ synchronized (L1) {
                                     synchronized (L2) {
                                       x = globalInt; // may be 0 or 3
                                     }
-
-{%endhighlight%}
+```
 
 Even though it uses synchronization and even if T2 runs after T1 finished, T2 is not guaranteed to see the new value. The JMM guarantees this only for the case when synchronizing on the same monitor (volatile and final are also possible, they will be discussed later):
 
-{%highlight java%}
+```text
 T1                                  T2
 _______________________________________________________________________
 synchronized (L1) {
@@ -64,12 +62,11 @@ synchronized (L1) {
                                                      // executed after
                                                      // T1
                                     }
-
-{%endhighlight%}
+```
 
 If that's true, what does this mean to a real case scenario like "initialize once, use multiple times":
 
-{% highlight java %}
+```java
 private static volatile Map<String> map;
  
 public Map<String> getMap() {
@@ -84,7 +81,7 @@ public Map<String> getMap() {
     }
     return map;
 }
-{% endhighlight %}
+```
 
 This is a map lazily initialized by a classic [double-checked][] idiom -- correctly implemented as of Java 1.5[^1]. This example uses a `HashMap` instead of a `ConcurrentMap` for optimization purposes. Since the map is only read after initialization, this is save. `volatile` makes sure other threads are going to see the new reference written to the variable map. But what happens to the elements of the map? The map reference is volatile, but the map elements are not. You learned previously that two threads need to synchronize to the same monitor if they want to make sure to see the same values. But in this case some readers may never reach the synchronize statement if the initialization was finished already. So what are the readers guaranteed to see?
 
@@ -109,7 +106,7 @@ There is another way to make it work according to the JMM if the object doesn't 
 
 So may you rewrite the example above in this way?:
 
-{% highlight java %}
+```java
 private static final Map<String> map = new HashMap<>();
  
 public Map<String> getMap() {
@@ -122,11 +119,11 @@ public Map<String> getMap() {
     }
     return map;
 }
-{% endhighlight %}
+```
 
 No, you may not rewrite it like this. Apart from the obvious problem that, the map could be modified while it is being read (once the first element was added), there are no data visibility guarantees according to the JMM regarding the map elements. Since the `map` field is not `volatile` any more, there is no `synchronizes-with` relationship between threads any more. But this will work:
 
-{% highlight java %}
+```java
 private static final Map<String> map = new HashMap<>();
 private static volatile initialized = false;
 
@@ -141,22 +138,22 @@ public Map<String> getMap() {
     }
     return map;
 }
-{% endhighlight %}
+```
 
 
 Now reading of `initialized` `synchronizes-with` the write of `initialized` variable and thus all writes happened until that moment. But then we're back at using `volatile` fields. The following approach works the best, when you can go completely without lazy initialization:
 
-{% highlight java %}
+```java
 private static final Map<String> map = createAndFillMap();
 
 public Map<String> getMap() {
     return map;
 }
-{% endhighlight %}
+```
 
 The next sample works as well *AND* is lazy initialized, but it tries to be smart and thus should not be your first choice ([Don't Be Too Smart][]).
 
-{% highlight java %}
+```java
 public Map<String> getMap() {
     return MapHolder.map;
 }
@@ -164,7 +161,7 @@ public Map<String> getMap() {
 private static class MapHolder {
     private static final Map<String> map = createAndFillMap();
 }
-{% endhighlight %}
+```
 
 This implementation relies on the JLS guarantee, that classes are loaded when they are used for the first time ([JLS 5.3][]).
 
@@ -175,7 +172,7 @@ But we're still not done talking about finals. If you read the JLS guarantee for
 
 `Completely initialized` is defined by finishing the constructor. Thus if the constructor leaks the reference to the object being constructed (`this`), there are no guarantees about thread visibility of the `final` fields. Example leaking `this`:
 
-{% highlight java %}
+```java
 public class Counter {
     private final AtomicInteger counter;
 
@@ -184,7 +181,7 @@ public class Counter {
         CounterRegistry.register(this);
     }
 }
-{% endhighlight %}
+```
 
 The constructor above leaks `this` reference before the constructor is finished. If a foreign thread picks up the reference (before the constructor finished) it may or may not see correct values. In general: avoid leaking `this` from constructors.
 
@@ -198,14 +195,14 @@ The `ReentrantReadWriteLock` implementation of `ReadWriteLock` uses two local fi
 ## Compiler Optimizations Allowed By the Java Memory Model
 The JMM preserves great freedom for optimizations of compilers. The whole JMM guarantees build around `happens-before`, `synchronizes-with` relationships and `well-formed execution` rules. The definitions go like "a read has to see the effects of a write, if that write came before the read in program order, and there was no other write in between". It doesn't say that the write actually has to happen when the write command is encountered in program order. It only states that the read has to see the effects. So it's completely valid for the compiler to move the write just immediately before the reading line. Or: let the write happen only to processor registers and write it back to memory much later when the compiler thinks it's appropriate. Or even: remove the write completely if there is no read which needs to see the write effects.
 
-{% highlight java %}
+```java
 x = 0;
 y = 1;
-{% endhighlight %}
+```
 
 It wouldn't surprise anyone if the compiler would reorder the two statements. There is probably no optimization benefit, but there is also no obvious reason why the compiler shouldn't. But take this code:
 
-{% highlight java %}
+```java
 // double-checked idiom implemented wrongly
 private Object instance;
 Object getInstance() {
@@ -222,11 +219,11 @@ Object getInstance() {
     }
     return instance;
 }
-{% endhighlight %}
+```
 
 (the code is discussed in [Bidirectional Memory Barrier][] as a attempt to implement the double-checked idiom without volatile keyword) The Java Memory Model does not prevent the compiler to change the code to:
 
-{% highlight java %}
+```java
 private Object instance;
 Object getInstance() {
     if (instance == null) {
@@ -242,12 +239,12 @@ Object getInstance() {
         }
     return instance;
 }
-{% endhighlight %}
+```
 
 
 And then, in the next optimization step:
 
-{% highlight java %}
+```java
 private Object instance;
 Object getInstance() {
     if (instance == null) {
@@ -261,7 +258,7 @@ Object getInstance() {
     }
     return instance;
 }
-{% endhighlight %}
+```
 
 There are rules which prevent the compiler to move lines, which are inside a synchronized block, out of the block. But there is no rule which forbids to move lines inside the synchronized block. Surprising, isn't it?
 
@@ -294,24 +291,24 @@ So does this mean for x86 architecture the JMM is not necessary? Does it add unn
 
 Memory access can be reordered. It can be reordered by the compiler or the CPU. Reordering by the compiler was already noted earlier. There are some restrictions to reordering introduced by the JMM, but compilers still have a lot of freedom to change the execution order compared to program order (as in the source). So when we have code like
 
-{% highlight java %}
+```java
 x = 3;
 written = true;
-{% endhighlight %}
+```
 
 nothing prevents the compiler to reorder these statements like this, making this code fail:
 
-{% highlight java %}
+```java
 while (!written) wait();
 assert x == 3;
-{% endhighlight %}
+```
 
 But even when the compiler did not change the order, the CPU might change it. Modern CPUs try to parallelize as much as possible. When code is executed in parallel it may appear to run out of order. Take for example a floating point calculation, a store of the calculation result to memory, and a subsequent load of another variable from memory:
 
-{% highlight java %}
+```java
 float f2 = f1 * 4.38473723f;
 if (x == 3) { ... }
-{% endhighlight %}
+```
 
 The load of `x` might be executed in parallel to the floating point calculation. So the value of `x` might be read from memory while `f2` was still not written to memory yet.
 
@@ -321,11 +318,11 @@ Some Java data types can be written and read by the processor in one operation. 
 ### Registers
 There are more types of "cache" than the usual CPU memory cache everyone thinks of when someone says "cache". The Java compiler could optimize code by storing variables temporarily in CPU registers. This can be considered a cache too. Take this code:
 
-{% highlight java %}
+```java
 for (int i = 0; i < 1000; i++) {
     j = j + 10;
 }
-{% endhighlight %}
+```
 
 It is almost certain that the variable `i` will only exist in CPU registers. It's also very likely that `j` will be loaded to a CPU register at the beginning of the loop, and only written back to memory when the loop finishes. No other threads will be able to observe the intermediate steps applied to `j`. If one needs to make sure other threads will observe the changes, he needs to tell this to Java explicitly.
 

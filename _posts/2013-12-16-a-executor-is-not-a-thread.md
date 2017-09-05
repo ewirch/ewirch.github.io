@@ -20,7 +20,7 @@ Java 1.5 introduced the `Executor` framework. In summery: if you have some tasks
 ## Introduction
 `Executor` is a interface. The `ExecutorService` interface extends `Executor`. One of the standard implementations of `ExecutorService` is `ThreadPoolExecutor`. This one manages some threads in a pool and executes the tasks you give it. You do this in form of a list of `Runnable` instances. A typical `Runnable` implementation looks like this:
 
-{% highlight java %}
+```java
 public class MyWorker implements Runnable {
     private final Object data;
 
@@ -37,25 +37,25 @@ public class MyWorker implements Runnable {
         // process data
     }
 }
-{% endhighlight %}
+```
 
 You initialize a `ThreadPoolExecutor` like this:
 
-{% highlight java %}
+```java
 int nThreads = 8;
 Executor executor = new ThreadPoolExecutor(nThread, nThreads, 0, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
-{% endhighlight %}
+```
 
 And since this is so cumbersome, there is a helper class for that:
 
-{% highlight java %}
+```java
 int nThreads = 8;
 Executor executor = Executors.newFixedThreadPool(nThreads);
-{% endhighlight %}
+```
 
 This is how to use a Executor wrapped in a method:
 
-{% highlight java %}
+```java
 public void executeRunnables(final List<Runnable> runnables) {
     int nThreads = 8;
     Executor executor = Executors.newFixedThreadPool(nThreads);
@@ -63,11 +63,11 @@ public void executeRunnables(final List<Runnable> runnables) {
         executor.execute(command);
     }
 }
-{% endhighlight %}
+```
 
 This method would return to the caller immediately after creating the executor. But usually you want to wait until all the tasks have been processed before returning to your caller. For this purpose `ExecutorService` defines the methods `shutdown()` and `awaitTermination()`:
 
-{% highlight java %}
+```java
 public void executeRunnables(final List<Runnable> runnables) throws InterruptedException {
     final int nThreads = 8;
     final ExecutorService executor = Executors.newFixedThreadPool(nThreads);
@@ -80,14 +80,14 @@ public void executeRunnables(final List<Runnable> runnables) throws InterruptedE
 
     executor.awaitTermination(2, TimeUnit.SECONDS);
 }
-{% endhighlight %}
+```
 
 (notice the change of executor type from `Executor` to `ExecutorService`) `shutdown()` puts the executor in "finish your work" mode. In this mode the executor will not accept new tasks. `awaitTermination()` waits until all threads processed all tasks. The time out takes care that your program doesn't wait forever if something goes wrong.
 
 ## Error handling
 So what if something goes wrong? What if one of your tasks throws an exception? How do you handle that? How do you even know something gone wrong? One possible approach is to catch and collect all exception inside the `Runnable` implementation:
 
-{% highlight java %}
+```java
 public class MyRunnable implements Runnable {
     private final Object            data;
     private final List<Exception>   exceptions;
@@ -110,13 +110,13 @@ public class MyRunnable implements Runnable {
         // process data
     }
 }
-{% endhighlight %}
+```
 
 But this approach has two major drawbacks: First, it would also catch the `InterruptedException` which may be used to control the thread under normal conditions. And second, the responsibility of error handling is moved to each `Runnable` implementation. You are going to implement a lot of `Runnables` and it's easy to forget something. `Executor` error handling calls for a generic solution.
 
 Java 1.5 adds a method to register exception handlers for exactly this purpose: `Thread.setUncaughtExceptionHandler()`. `Exceptions` which are not handled by the `run()` method of the `Thread` implementation, will be forwarded to this handler. Let's modify the above example to use a exception handler:
 
-{% highlight java %}
+```java
 /**
  * Implementation of a UncaughtExceptionHandler, which stores all exceptions in a List.
  */
@@ -169,7 +169,7 @@ public void executeRunnables(final List<Runnable> runnables) throws InterruptedE
                     " exceptions occured. First exception:", exHandler.exceptions.get(0));
     }
 }
-{% endhighlight %}
+```
 
 Now this looks good! If a exception is not handled by the `Runnable` implementation the `Thread` will get it and it will pass it on to the uncaught exception handler. The handler will store it in the list for later usage. `executeRunnables()` waits until all `Threads` are done with work and checks the exception list then. If there is a entry it will be wrapped in a `RuntimeException` and rethrown. Instead of just passing the first exception, it's also possible to append the whole exception list to the thrown exception. This way the caller will be notified of all errors.
 
@@ -187,7 +187,7 @@ A very unexpected behaviour. But I won't leave you without a working solution. S
 ## Correct solution
 We are lucky that the `ThreadPoolExecutor` class was designed for extendibility. There is a empty protected method `afterExecute(Runnable r, Throwable t)`. This will be invoked directly after the `run()` method of our `Runnable` before the worker signals that it finished the work. The correct solution is to extend the `ThreadPoolExecutor` to handle uncaught exceptions:
 
-{% highlight java %}
+```java
 public class ExceptionAwareThreadPoolExecutor extends ThreadPoolExecutor {
     private final List<Throwable> uncaughtExceptions = 
                     Collections.synchronizedList(new LinkedList<Throwable>());
@@ -201,4 +201,4 @@ public class ExceptionAwareThreadPoolExecutor extends ThreadPoolExecutor {
         return Collections.unmodifiableList(uncaughtExceptions);
     }
 }
-{% endhighlight %}
+```

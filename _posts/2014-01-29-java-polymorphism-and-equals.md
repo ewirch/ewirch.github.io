@@ -28,7 +28,7 @@ Let's start by having a small introduction. The mother of all Java classes -- `O
 Quite a bunch. Luckily those requirements are often easy to achieve. Let's create a simple class and equip it with a `equals()` method.
 
 ## A Drink
-{% highlight java %}
+```java
 public class Drink {
   private final int size;
 
@@ -46,14 +46,14 @@ public class Drink {
     return this.size == other.size;
   }
 }
-{% endhighlight %}
+```
 
 This `equals()` implementation obeys all the requirements above. And I added a convenience method with the exact type. Note that `equals(Drink)` does overload `Object.equals(Object)` but it [does not override] it! The difference between those two will be important later.
 
 ## A Drink? A Coffee? A Coke?
 Now let's introduce [polymorphism]. We add two classes Coffee and Coke which extend the `Drink` class:
 
-{% highlight java %}
+```java
 public class Coffee extends Drink {
   private final int coffeine;
 
@@ -93,11 +93,11 @@ public class Coke extends Drink {
     return sugar == other.sugar;
   }
 }
-{% endhighlight %}
+```
 
 The `equals()` methods are implemented here in a similar way. Everything looks fine, doesn't it? Let's see how the `equals()` methods behave:
 
-{% highlight java %}
+```java
 final Drink drink = new Drink(15);
 final Drink secondDrink = new Drink(15);
 
@@ -110,7 +110,7 @@ final Coke coke = new Coke(15, 42);
 System.out.println("coffee.equals(drink): " + coffee.equals(drink);
 System.out.println("drink.equals(coffee): " + drink.equals(coffee));
 System.out.println("coke.equals(coffee): " + coke.equals(coffee));
-{% endhighlight %}
+```
 
 What’s the output? Your brain might tell you something like this:
 
@@ -147,7 +147,7 @@ Still not quite the output we're expecting. What's happening now? When `coffee.e
 ## Not all Drinks are Coffees
 So is polymorphism broken in Java? Not quite. It seems like `instanceof` is not the check you should use per default in `equals()`. It's sometimes important, we'll see in a minute, but usually what you'd like to do is to use `Object.getClass()` and compare the class of the passed instance to the class of the current instance:
 
-{% highlight java %}
+```java
 public class Drink {
   ...
 
@@ -164,7 +164,7 @@ public class Drink {
 }
 
 // changes in Coffee and Coke similar
-{% endhighlight %}
+```
 
 As specified by [documentation of getClass()], it is guaranteed to return the same `Class` instance for the same class. So it is save to use the `==` operator. Note that `obj.getClass()` is compared against `this.getClass()` and not against `Drink.class`! If we'd compare against the hard coded class `super.equals()` invocations from extending classes would always fail for non `Drink` instances.
 

@@ -119,7 +119,7 @@ GPUView is able to display the stack of the thread at the time when it was woken
 
 The stack trace of the video scheduler waking up for the first time is (zero is the youngest stack frame, the invocation order is from bottom to top):
 
-{% highlight c %}
+```c
 0 0xFFFFF80003686F97 ntoskrnl.exe!SwapContext_PatchXRstor+0x103 
 1 0xFFFFF80003686A8A ntoskrnl.exe!KiSwapContext+0x7A 
 2 0xFFFFF800036795F2 ntoskrnl.exe!KiCommitThreadWait+0x1D2 
@@ -129,11 +129,11 @@ The stack trace of the video scheduler waking up for the first time is (zero is 
 6 0xFFFFF880043C9FF6 dxgmms1.sys!VidSchiWorkerThread+0xBA 
 7 0xFFFFF800039202EA ntoskrnl.exe!PspSystemThreadStartup+0x5A 
 8 0xFFFFF800036748E6 ntoskrnl.exe!KiStartSystemThread+0x16 
-{% endhighlight %}
+```
 
 Everything above `KeWaitForMultipleObjects` can be ignored. Just below this call we see what the thread was waiting for: `VidSchiWaitForSchedulerEvents`. And it was invoked by `VidSchiScheduleCommandToRun`. I checked the stack traces of the three successive wake ups. Two times it was the same stack trace. But the last time the thread was waiting for something different:
 
-{% highlight c %}
+```c
 0 0xFFFFF80003686F97 ntoskrnl.exe!SwapContext_PatchXRstor+0x103 
 1 0xFFFFF80003686A8A ntoskrnl.exe!KiSwapContext+0x7A 
 2 0xFFFFF800036795F2 ntoskrnl.exe!KiCommitThreadWait+0x1D2 
@@ -144,7 +144,7 @@ Everything above `KeWaitForMultipleObjects` can be ignored. Just below this call
 7 0xFFFFF880043C9FF6 dxgmms1.sys!VidSchiWorkerThread+0xBA 
 8 0xFFFFF800039202EA ntoskrnl.exe!PspSystemThreadStartup+0x5A 
 9 0xFFFFF800036748E6 ntoskrnl.exe!KiStartSystemThread+0x16 
-{% endhighlight %}
+```
 
 This time it was waiting for completion (`VidSchWaitForCompletionEvent`). As already said the thread waits for graphic command packets to appear in process queues and moves them to the GPU queue. When the GPU queue is full, it waits until there's room.
 
@@ -154,7 +154,7 @@ Next I want to see how the bad frame looks like:
 
 The `VidSchiWorkerThread` was woken up six times in this frame. It woke up for the first time when `dwm.exe` added a packet to its queue. It also started adjustment of its own priority for some reason (`VidSchiAdjustWorkerThreadPriority`). When it was woken up for the second time, it finished the priority adjustment and went to sleep again. The third time it was woken up when `Source.exe` added a packet to its queue. It finished its work and went to sleep again. The fourth time it was woken up by the new 'present' packet. But the GPU queue was full so it went to sleep again, this time waiting for completion of the packet being processed by the GPU. Just like in the 'good' frame. But when it woke up for the fifth time, it did not move the present packet to the GPU queue. Even though there was room for a new packet it went to sleep again waiting for something. The stack trace of the sixth packet shows what it was waiting for:
 
-{% highlight c %}
+```c
 0 0xFFFFF80003686F97 ntoskrnl.exe!SwapContext_PatchXRstor+0x103 
 1 0xFFFFF80003686A8A ntoskrnl.exe!KiSwapContext+0x7A 
 2 0xFFFFF800036795F2 ntoskrnl.exe!KiCommitThreadWait+0x1D2 
@@ -168,7 +168,7 @@ The `VidSchiWorkerThread` was woken up six times in this frame. It woke up for t
 10 0xFFFFF880043C9FF6 dxgmms1.sys!VidSchiWorkerThread+0xBA 
 11 0xFFFFF800039202EA ntoskrnl.exe!PspSystemThreadStartup+0x5A 
 12 0xFFFFF800036748E6 ntoskrnl.exe!KiStartSystemThread+0x16
-{% endhighlight %}
+```
 
 It's waiting for an empty GPU queue (`VidSchiWaitForEmptyHwQueue`). And `VidSchiHandleControlEvent` was the reason it started to wait for a empty GPU queue. So there arrived some kind of a control command which made the scheduler clear the GPU queue. But that's not the end. The 'present' packet remained in the software queue until the end of the frame. Just after the next vsync the scheduler thread wakes up:
 
@@ -176,7 +176,7 @@ It's waiting for an empty GPU queue (`VidSchiWaitForEmptyHwQueue`). And `VidSchi
 
 In the stack trace I can see what it was waiting for:
 
-{% highlight c %}
+```c
 0 0xFFFFF80003686F97 ntoskrnl.exe!SwapContext_PatchXRstor+0x103 
 1 0xFFFFF80003686A8A ntoskrnl.exe!KiSwapContext+0x7A 
 2 0xFFFFF800036795F2 ntoskrnl.exe!KiCommitThreadWait+0x1D2 
@@ -190,7 +190,7 @@ In the stack trace I can see what it was waiting for:
 10 0xFFFFF880043C9FF6 dxgmms1.sys!VidSchiWorkerThread+0xBA 
 11 0xFFFFF800039202EA ntoskrnl.exe!PspSystemThreadStartup+0x5A
 12 0xFFFFF800036748E6 ntoskrnl.exe!KiStartSystemThread+0x16
-{% endhighlight %}
+```
 
 The control command required even the flip queue to run completely dry. It looks like it was some kind of 'flush GPU' command. But what did request this flush? In the screenshots above there was a collapsed process (`csrss.exe`) which I made visible for the next screenshot. It's the beginning of the bad frame again:
 
@@ -202,7 +202,7 @@ You see that `csrss.exe` executed something before the video scheduler started t
 
 When I clicked the small handle of the `csrss.exe` CPU time slice GPUView showed me that the System video scheduler thread did ready the `csrss.exe` thread. The small white triangle indicates this. In other words: the video scheduler did unlock something what the `csrss.exe` thread was waiting for (to learn more about wait analysis read this great article by Bruce Dawson: [Xperf Wait Analysis–Finding Idle Time]). The video scheduler did this after the GPU flush completed, so `csrss.exe` was waiting for the GPU flush. And indeed the stack trace of `csrss.exe` contains the next hint:
 
-{% highlight c %}
+```c
 0 0xFFFFF80003686F97 ntoskrnl.exe!SwapContext_PatchXRstor+0x103 
 1 0xFFFFF80003686A8A ntoskrnl.exe!KiSwapContext+0x7A 
 2 0xFFFFF800036795F2 ntoskrnl.exe!KiCommitThreadWait+0x1D2 
@@ -214,7 +214,7 @@ When I clicked the small handle of the `csrss.exe` CPU time slice GPUView showed
 8 0xFFFFF960006D5E75 cdd.dll!PresentWorkerThread+0xB09 
 9 0xFFFFF800039202EA ntoskrnl.exe!PspSystemThreadStartup+0x5A 
 10 0xFFFFF800036748E6 ntoskrnl.exe!KiStartSystemThread+0x16 
-{% endhighlight %}
+```
 
 `SetGammaRamp` was the command which required the GPU to complete all the work in the queue (so it won't be affected by the change probably). But I still don't know which process told `csrss.exe` to execute this command. I don't see no more processes in GPUView. But this doesn't mean there are no more processes. GPUView does hide some processes which it finds to be not relevant for the trace. I switch to WPA and load the same trace.
 

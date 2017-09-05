@@ -19,7 +19,7 @@ Sometimes the runtime speed of collection methods can vary extremely when called
 
 Have a look at this code:
 
-{% highlight java %}
+```java
 Set<Integer>        set1 = getHashSetHaving5000Elements();
 Collection<Integer> c1   = getArrayListHaving5001Elements();
  
@@ -28,7 +28,7 @@ Collection<Integer> c2   = getArrayListHaving4999Elements();
 
 set1.removeAll(c1);
 set2.removeAll(c2);
-{% endhighlight %}
+```
 
 Which block will be faster? 'The second one!', you yell, 'It contains two elements less!'. That's true. But it will surprise you to know that it is more than twice as fast, not just a couple of milliseconds! How come? The solution is in the documentation of `AbstractSet.removeAll()`:
 
@@ -36,7 +36,7 @@ Which block will be faster? 'The second one!', you yell, 'It contains two elemen
 
 So if the passed collection is bigger, even by one element, the implementation will call `c1.contains()` for each element of the set -- which is pretty slow for `ArrayList`. That's surprising, isn't it? Here's the code of `AbstractSet.removeAll()`:
 
-{% highlight java %}
+```java
 public boolean removeAll(Collection<?> c) {
 	Objects.requireNonNull(c);
 	boolean modified = false;
@@ -54,6 +54,6 @@ public boolean removeAll(Collection<?> c) {
 	}
 	return modified;
 }
-{% endhighlight %}
+```
 
 I understand why the designers of `AbstractSet` did this 'optimization'. After all you can't know how both instances (the `AbstractSet` instance and the `Collection` instance) are implemented. But I'd have overridden this method in `HashSet`, and would have added some black list checks for types which are known to be slower than `HashSet`.

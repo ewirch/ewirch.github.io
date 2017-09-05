@@ -18,7 +18,7 @@ I stumbled several times already upon situations where I created a circular depe
 It increases coupling between classes and thus makes changes more difficult ([Circular dependency - Wikipedia][wikipedia]). But in some languages (for example Java) it's possible to create classes which depend on each other without compiler errors. So very often circular dependencies are created and used without noticing. Differently for C++. The strict processing order of C++ compilers will spill out a bunch of errors when you try to make two classes depend on each other.
 But you surely had a reason for this attempt. So how you achieve your aim whilst avoiding a circular dependency? See this example of a thread safe, usage based, load balanced object pool implementation:
 
-{% highlight c++ %}
+```c++
 // File: ObjectPool.h
 
 #pragma once
@@ -71,10 +71,10 @@ private:
   // implementation details omitted
  }
 };
-{% endhighlight %}
+```
 
 
-{% highlight c++ %}
+```c++
 // File: Element.h
 
 #pragma once
@@ -99,32 +99,32 @@ public:
   return usageCount_;
  }
 };
-{% endhighlight %}
+```
 
 
 This is how it is used:
 
-{% highlight c++ %}
+```c++
 ObjectPool pool(5);
 Element *element = pool.take();
 // use element
 pool.release(element);
-{% endhighlight %}
+```
 
 I spare you the implementation details of `Lock.h`. Just assume it contains a lock implementation capable of synchronizing threads.
 
 I'd like to modify this object pool and enable the element to release itself. I'd like to use the pool like this:
 
-{% highlight c++ %}
+```c++
 ObjectPool pool(5);
 Element *element = pool.take();
 // use element
 element.release();
-{% endhighlight %}
+```
 
 Here are the code changes implementing this feature:
 
-{% highlight c++ %}
+```c++
 // File: ObjectPool.h
 
  ...
@@ -136,10 +136,10 @@ public:
  }
 
  ...
-{% endhighlight %}
+```
 
 
-{% highlight c++ %}
+```c++
 // File: Element.h
 ...
 class Element {
@@ -157,7 +157,7 @@ public:
   parent_.release(this);
  }
 };
-{% endhighlight %}
+```
 
 This example suffers from two problems: 
 
@@ -172,7 +172,7 @@ The solution is to decouple the `ObjectPool` and the `Element` class. I'll show 
 
 Here is the interface:
 
-{% highlight c++ %}
+```c++
 // File: Releaser.h
 
 #pragma once
@@ -183,11 +183,11 @@ public:
  virtual ~Releaser() {};
  virtual void release(T *element) = 0;
 };
-{% endhighlight %}
+```
 
 It defines a single release method with a template type. The template type is essential here. Without the use of a template the interface would need to include `Element` type to use it as parameter type. But this would again create a circular dependency: `ObjectPool -> Releaser -> Element -> Releaser`. Using the template trick we break the cycle. Here are the modified implementations of `ObjectPool` and `Element`.
 
-{% highlight c++ %}
+```c++
 // File: ObjectPool.h
 
 #pragma once
@@ -237,10 +237,10 @@ private:
   // implementation details omitted
  }
 };
-{% endhighlight %}
+```
 
 
-{% highlight c++ %}
+```c++
 // File: Element.h
 
 #pragma once
@@ -272,7 +272,7 @@ public:
   releaser_.release(this);
  }
 };
-{% endhighlight %}
+```
 
 Now `Element` only references `Releaser` and the dependency cycle is broken.
 

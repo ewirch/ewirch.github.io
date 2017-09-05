@@ -46,20 +46,20 @@ When using several Linux tools, which do report memory usage (`ps`/`top`), you w
 
 They exist to name two different memory allocation types. **Vss** names the reserved address space. **Rss** names the physical allocated memory (simplefied, see [Details For The Hard Core Developer 1](#dfthcd1)). One could (theoretically) allocate 16 terabytes of address space without using even one byte of physical memory. Only when the program asks the system to allocate physical memory, physical memory is allocated (simplified, see [Details For The Hard Core Developer 2](#dfthcd2)). How does the system tell between address space allocation and physical memory allocation? When the process allocates memory from the system it passes access permission to `mmap()`:
 
-{% highlight c %}
+```c
 // mmap() syntax: void *mmap(void *addr, size_t length, int prot, int flags, int fd, off_t offset);
 
 // this will allocate 200 bytes without any access permissions at a
 // starting address choosen by the system
 void *block1 = mmap(NULL, 200, PROT_NONE, MAP_PRIVATE, 0, 0);
-{% endhighlight %}
+```
 
 This is just a address space reservation. The address space starting at block1 and spanning 200 bytes will not be issued at any other `mmap()` call. How does a process allocate physical memory? By changing the access permissions:
 
-{% highlight c %}
+```c
 // syntax of mprotect(): int mprotect(const void *addr, size_t len, int prot);
 mprotect(block1, 100, PROT_READ | PROT_WRITE); 
-{% endhighlight %}
+```
 
 After this invocation the first 100 bytes will be available for read and write. The remaining 100 bytes will still be just reserved address space.
 
@@ -68,14 +68,14 @@ But why we need to reserve address space anyway? If you are curious, see [Detail
 ## How libc Manages Memory
 As already said, the system allocates the main arena block for each process at process start up. Libc creates a heap data structure inside of this main arena block. This is the main heap. Libc supports multi threaded programs. So invoking the memory functions in parallel is possible. Like any other program, libc has to use locking to guarantee data structure integrity while several threads call libc functions at the same time. To increase performance, libc tries to reduce lock contention (lock blocking) by having one lock per heap and by creating more heaps. When a memory request arrives at libc, it tries to lock the heap which was last used by the thread. If the thread did not use any heap yet, libc tries to lock the main heap. If locking fails, libc tries the next existing heap. If all heaps have been tested, libc creates a new heap. A heap is created by requesting a new arena from the system (`mmap()`) and writing heap structures into it:
 
-{% highlight c %}
+```c
 void *arena;
 // reserves 64MB address space. libc heaps start always at 64MB size.
 arena = mmap(NULL, 64*1024*1024, PROT_NONE, MAP_PRIVATE, 0, 0);
 // allocate necessary memory at the beginning of heap
 mprotect(arena, 1000, PROT_READ | PROT_WRITE);
 // after this invocation libc can use the first 1000 bytes of the reserved address space 
-{% endhighlight %}
+```
 
 When a heap was successfully locked, libc tries to find a free block which does satisfy the requested size. If a block was found, it is returned. If no block was found, libc tries to increase the size of the heap. It can do this in two ways.
 
@@ -90,7 +90,7 @@ So what do we learn from this? Don't use more threads than necessary. After all 
 ## /proc/xxx/maps
 Everyone can have a look at the blocks issued by the sytem to the program. The file maps in the proc folder of each process contains this information. The contents look like this (example of bash process):
 
-{% highlight bash %}
+```bash
 00400000-004e1000 r-xp 00000000 fc:00 524291                             /bin/bash
 006e0000-006e1000 r--p 000e0000 fc:00 524291                             /bin/bash
 006e1000-006ea000 rw-p 000e1000 fc:00 524291                             /bin/bash
@@ -137,7 +137,7 @@ Everyone can have a look at the blocks issued by the sytem to the program. The f
 7fff98beb000-7fff98c0c000 rw-p 00000000 00:00 0                          [stack]
 7fff98d48000-7fff98d49000 r-xp 00000000 00:00 0                          [vdso]
 ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
-{% endhighlight %}
+```
 
 The columns are:
 
@@ -153,21 +153,21 @@ The tool `pmap` can display the same information in a more readable format. Abou
 ## Tools
 I've written a tool to read the maps of a java process and guess the role of the different blocks. The tool is committed here: [javaJniMemUsage.pl][script-github]. It runs intrusionless on a server with very limited prerequisites (only Perl and Linux).
 
-{% highlight bash %}
+```bash
 javaJniMemUsage.pl [OPTIONS] PID|proc-maps-file
   OPTIONS
    -c - print output as CSV
    -h - print CSV header line before data line
   PID - process id of process to retrieve memory maps information.
   proc-maps-file - contains memory maps information. Can be directly /proc/PID/maps.
-{% endhighlight %}
+```
 
 One can invoke the tool with a pid, in which case the tool will read `/proc/PID/maps`, or a file which contains a maps dump. Without any other parameters the tool will dump a human readable output.
 
 
 Here is a sample output of a busy java application server:
 
-{% highlight bash %}
+```bash
 7f2096bf9000 -      5066752 (   4M 852K), rw-p, 0,
 7f20973b6000 -      5066752 (   4M 852K), rw-p, 0,
 7f2097b73000 -      5066752 (   4M 852K), rw-p, 0,
@@ -264,7 +264,7 @@ libc arenas =
          vsz= 4G 64M
 unknown rss = 145M 616K, vsz =  146M 580K
 sum rss = 15G 275M 28K, vsz = 16G 90M 356K
-{% endhighlight %}
+```
 
 First it dumps a list of blocks it was not able to identify. (The format changes slightly. Instead of the end address, the size of the block is printed.) The size of these blocks is summed up at the bottom: "unknown rss". This should be a small number. After that, it dumps categories of blocks it did identify. Each category is grouped into paragraphs of same size. Each size paragraph contains the number of blocks found and the size sum occupied by those blocks. Size sum is always split into vsz (vss) and rss. Vsz includes rss, this is why it will be always bigger. Some size paragraphs print also addresses of the identified blocks. They can be usually ignored. "sum rss" and "sum vsz" finally is the sum of all the blocks. They should be the same like reported by `ps`/`top`.
 

@@ -22,7 +22,7 @@ Preface: There is a magnificent article covering this topic: [Double Check Locki
 ## Java 1.4
 When Java 1.4 was the most recent release the so called Double-Check Idiom was considered broken. Due to the Java memory model specifications it was not guaranteed to work as one would expect. This is the double-check idiom in it's pure form:
 
-{% highlight java %}
+```java
 piblic class Boss {
   private String name;
   
@@ -45,7 +45,7 @@ public class Company {
     return boss;
   }
 }
-{% endhighlight %}
+```
 
 There are two major reasons why this could fail:
 
@@ -67,13 +67,13 @@ Java 1.5 implements a more recent memory model specification. The modification w
 
 The fixed example from above would look like this:
 
-{% highlight java %}
+```java
 public class Company {
   private volatile Boss boss = null;
   
   ....
 }
-{% endhighlight %}
+```
 
 Concluding: the double-checked idiom was really really broken before Java 1.5. It is really really fixed with Java >= 1.5 only when the the field being checked in the double-checked idom is declared volatile. If it is not, it's still broken.
 
