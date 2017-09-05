@@ -2,8 +2,8 @@
 layout: article
 title: "Better Commits - Part 4 - Code Format Reloaded"
 categories: articles
-date: 2017-08-11
-modified: 2017-08-11
+date: 2017-09-16
+modified: 2017-09-16
 tags: [scm, git, code-review, code-history]
 image:
   feature: 
