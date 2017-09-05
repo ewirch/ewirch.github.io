@@ -12,3 +12,32 @@ Immer wenn sich Dependencies ändern:
 bundle update
 bundle install
 
+Erweiterte Markdown-Syntax
+==========================
+
+Fußnoten
+--------
+Dies ist ein Fließtext[^footnote-id].
+
+[^footnote-id] Dies ist der Fußnoten-Text, mitten zwischen zwei Absätzen. Gerendert wird er aber zum Schluss des Artikels.
+
+Links
+-----
+Hier ist ein [Link][].
+
+Am Ende des Dokuments:
+[Link]: https://meinlink.de
+
+Akronymerklärung
+------------------
+*[vsyncs]: Am Ende des Dokuments, unterstreicht jedes Vorkomnis von "vsyncs" im Fließtext und blendet diesen Text ein.
+
+Begriffsdefinition
+------------------
+*Ein Begriff*
+: Erklärt durch Fließtext.
+
+Interne Verlinkung mit Link Validierung
+---------------------------------------
+{{site.url}}{% post_url 2017-09-09-better-commits-3-review-changes %}
+
