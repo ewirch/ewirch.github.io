@@ -276,6 +276,6 @@ public:
 
 Now `Element` only references `Releaser` and the dependency cycle is broken.
 
-[wikipedia]: http://en.wikipedia.org/wiki/Circular_dependency
-[safe-constructor-techniques]: http://www.ibm.com/developerworks/java/library/j-jtp0618/index.html
-[should-i-use-this-pointer]: http://www.parashift.com/c++-faq/using-this-in-ctors.html
+[wikipedia]: https://en.wikipedia.org/wiki/Circular_dependency
+[safe-constructor-techniques]: https://www.ibm.com/developerworks/java/library/j-jtp0618/index.html
+[should-i-use-this-pointer]: https://www.cs.technion.ac.il/users/yechiel/c++-faq/using-this-in-ctors.html

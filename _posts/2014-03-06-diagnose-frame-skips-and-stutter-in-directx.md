@@ -247,10 +247,10 @@ Bulls eye! So `flux.exe` told the system to set the gamma ramp. [f.lux] is a sma
 [GPUView]: http://graphics.stanford.edu/~mdfisher/GPUView.html
 [introduction to GPUView]: http://graphics.stanford.edu/~mdfisher/GPUView.html
 [NVIDIA PerfKit]: https://developer.nvidia.com/nvidia-perfkit
-[AMD GPU PerfStudio 2]: http://developer.amd.com/tools-and-sdks/graphics-development/gpu-perfstudio/
-[AMD GPU ShaderAnalyzer]: http://developer.amd.com/tools-and-sdks/graphics-development/gpu-shaderanalyzer/
+[AMD GPU PerfStudio 2]: http://gpuopen.com/archive/gpu-perfstudio/
+[AMD GPU ShaderAnalyzer]: http://gpuopen.com/archive/gpu-shaderanalyzer/
 [Intel Graphics Performance Analyzers]: https://software.intel.com/en-us/gpa
-[gDEBugger]: http://www.gremedy.com/
+[gDEBugger]: https://www.opengl.org/sdk/tools/gDEBugger/
 [RenderDoc]: https://renderdoc.org/builds
 [Xperf Wait Analysis–Finding Idle Time]: http://randomascii.wordpress.com/2012/05/05/xperf-wait-analysisfinding-idle-time/
 [f.lux]: https://justgetflux.com/
