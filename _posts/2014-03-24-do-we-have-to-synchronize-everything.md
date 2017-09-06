@@ -348,10 +348,10 @@ Consistency and performance are conflicting. ;) But you knew this already, right
 *[JLS]: Java Language Specification
 
 [ThreadSafe]: http://www.contemplateltd.com/threadsafe
-[JLS 17.4.4]: http://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html#jls-17.4.4
-[JLS 17.5]: http://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html#jls-17.5
-[JLS 5.3]: http://docs.oracle.com/javase/specs/jls/se7/html/jls-5.html#jls-5.3
-[double-checked]: http://en.wikipedia.org/wiki/Double-checked_locking
+[JLS 17.4.4]: https://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html#jls-17.4.4
+[JLS 17.5]: https://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html#jls-17.5
+[JLS 5.3]: https://docs.oracle.com/javase/specs/jls/se7/html/jls-5.html#jls-5.3
+[double-checked]: https://en.wikipedia.org/wiki/Double-checked_locking
 [double-checked-fixed]: {% post_url 2014-02-27-is-double-check-really-fixed %}
 [Don't Be Too Smart]: http://programmer.97things.oreilly.com/wiki/index.php/Don%27t_Be_Too_Smart
-[Bidirectional Memory Barrier]: http://www.cs.umd.edu/~pugh/java/memoryModel/BidirectionalMemoryBarrier.html
+[Bidirectional Memory Barrier]: https://www.cs.umd.edu/~pugh/java/memoryModel/BidirectionalMemoryBarrier.html

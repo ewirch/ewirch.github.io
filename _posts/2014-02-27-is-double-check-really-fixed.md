@@ -78,4 +78,4 @@ public class Company {
 Concluding: the double-checked idiom was really really broken before Java 1.5. It is really really fixed with Java >= 1.5 only when the the field being checked in the double-checked idom is declared volatile. If it is not, it's still broken.
 
 
-[bill-pugh]: http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
+[bill-pugh]: https://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html

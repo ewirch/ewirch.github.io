@@ -176,8 +176,8 @@ Now when would one want to use `instanceof` in `equals()` implementations? The s
 ## One more thing
 Don't forget to implement `hashCode()` if you override `equals()`. Both methods have a tight relationship. Whenever `a.equals(b)` returns true, also `a.hashCode()` has to be equal to `b.hashCode()`!
 
-[Object.equals()]: http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#equals%28java.lang.Object%29
-[does not override]: http://stackoverflow.com/questions/10568772/overloaded-and-overridden-in-java
-[polymorphism]: http://en.wikipedia.org/wiki/Polymorphism_%28computer_science%29
-[documentation of getClass()]: http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#getClass%28%29
+[Object.equals()]: https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#equals%28java.lang.Object%29
+[does not override]: https://stackoverflow.com/questions/10568772/overloaded-and-overridden-in-java
+[polymorphism]: https://en.wikipedia.org/wiki/Polymorphism_%28computer_science%29
+[documentation of getClass()]: https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#getClass%28%29
 [equals()]: http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/java/util/AbstractMap.java#AbstractMap.equals%28java.lang.Object%29

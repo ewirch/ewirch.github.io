@@ -136,8 +136,8 @@ So here's the culprit: graphic card memory speed. Or: the bug. Depends on the pe
 
 For the vigilant reader of the original stackoverflow.com question: the enabled multisampling surely took it's toll as well. 
 
-[stack-question]: http://stackoverflow.com/questions/17842578/curious-slowdown-in-opengl-when-using-instanced-rendering
+[stack-question]: https://stackoverflow.com/questions/17842578/curious-slowdown-in-opengl-when-using-instanced-rendering
 [indexed-drawing]: https://www.opengl.org/wiki/Vertex_Rendering#Basic_Drawing
 [instanced-drawing]: https://www.opengl.org/wiki/Vertex_Rendering#Instancing
-[Windows 8.1 SDK]: http://msdn.microsoft.com/en-us/library/windows/desktop/bg162891.aspx
-[GPUView project site]: http://graphics.stanford.edu/~mdfisher/GPUView.html
+[Windows 8.1 SDK]: https://msdn.microsoft.com/en-us/library/windows/desktop/bg162891.aspx
+[GPUView project site]: https://graphics.stanford.edu/~mdfisher/GPUView.html
