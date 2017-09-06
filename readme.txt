@@ -45,3 +45,6 @@ Interne Verlinkung mit Link Validierung
 ---------------------------------------
 {{site.url}}{% post_url 2017-09-09-better-commits-3-review-changes %}
 
+Inhaltsverzeichnis
+------------------
+{% include toc.html %}
