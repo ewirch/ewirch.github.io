@@ -13,7 +13,7 @@ bundle update
 bundle install
 
 Links validieren:
-bundle exec htmlproofer ./_site/ --only-4xx
+bundle exec htmlproofer ./_site/
 
 Erweiterte Markdown-Syntax
 ==========================
@@ -26,10 +26,11 @@ Dies ist ein Fließtext[^footnote-id].
 
 Links
 -----
-Hier ist ein [Link][].
+Hier ist ein [Link][]. Hier ist ein [Link mit separater ID][link-id].
 
 Am Ende des Dokuments:
 [Link]: https://meinlink.de
+[link-id]: https://meinlink.de
 
 Akronymerklärung
 ------------------
