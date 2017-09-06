@@ -15,7 +15,7 @@ ads: false
 <div style="display:flex;" class="page-content">
 	<div style="width:160px;min-width:160px;margin-right:30px;">
 		<p>
-			<img src="{{site.url}}/images/{{site.owner.avatar}}" />
+			<img src="{{site.url}}/images/{{site.owner.avatar}}" alt="Photo of me" />
 		</p>
 	</div>
 	<div>
