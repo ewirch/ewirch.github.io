@@ -17,11 +17,12 @@ comments: true
 
 In the first part [Better Commits - Part 1 - Code Format][] I presented a way how you can make your code history easier to read by committing format changes separately. This time I'll show how to handle refactorings. I will make heavy use of Git commands. If you use a different SCM or a Git UI, it's possible that you can map the steps to actions of your tool.
 
- This post is part of a multi post series.
+This post is part of a multi post series.
 
 - [Better Commits - Part 1 - Code Format][]
 - [Better Commits - Part 2 - Refactorings][]
 - [Better Commits - Part 3 - Review Changes][]
+- [Better Commits - Part 4 - Code Format Reloaded][]
 
 While working on a feature or bug fix I often find code which needs some love. Or I have to apply some refactorings to prepare the code for the new feature. It makes the commit history easier to read (and thus makes also code reviews easier) if the refactoring steps are committed separately. It reduces your cognitive overhead while parsing the changes. This way you group syntactic changes to commits.
 Just imagine a rename of a highly used class. The change will affect a lot of files and a lot of lines. But the change itself is simple. If you don't split your changes into commits, then the rename change is mixed with feature implementation. The reviewer will have a hard time deciding line by line if the change is fine. If you commit the rename separately, the reviewer can quickly skim over the rename commit and concentrate on the logic change commit. Or if you get back to this commit in a couple of months, trying to find out what happened, you will have to check a lot of irrelevant lines to find the important changes.
@@ -91,6 +92,7 @@ I've shown two ways here which make it easier to group changes semantically. Thi
 [Better Commits - Part 1 - Code Format]: {{site.url}}{% post_url 2017-08-11-better-commits-1-code-format %}
 [Better Commits - Part 2 - Refactorings]: {{site.url}}{% post_url 2017-08-31-better-commits-2-refactorings %}
 [Better Commits - Part 3 - Review Changes]: {{site.url}}{% post_url 2017-09-09-better-commits-3-review-changes %}
+[Better Commits - Part 4 - Code Format Reloaded]: {{site.url}}{% post_url 2017-09-16-better-commits-4-code-format-reloaded %}
 [read]: https://git-scm.com/book/en/v2/Getting-Started-Git-Basics#_the_three_states
 [bit about]: https://githowto.com/staging_changes
 [changes in Git]: https://softwareengineering.stackexchange.com/questions/119782/what-does-stage-mean-in-git

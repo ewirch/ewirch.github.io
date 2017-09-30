@@ -26,6 +26,7 @@ I'd like to present some ideas and techniques which will improve your commit his
 - [Better Commits - Part 1 - Code Format][]
 - [Better Commits - Part 2 - Refactorings][]
 - [Better Commits - Part 3 - Review Changes][]
+- [Better Commits - Part 4 - Code Format Reloaded][]
 
 
 The diff above contains a lot of noise. It creates too much cognitive overhead while parsing. I often have to review changes like this. Code formatting rules which are used by the whole team are important. But it still happens. Maybe the committer forgot to format a file after he applied changes. Or maybe the formatting rules were changed after the file was creating. Touching the file again re-formats it completely.
@@ -91,3 +92,4 @@ git stash drop stash@{0}
 [Better Commits - Part 1 - Code Format]: {{site.url}}{% post_url 2017-08-11-better-commits-1-code-format %}
 [Better Commits - Part 2 - Refactorings]: {{site.url}}{% post_url 2017-08-31-better-commits-2-refactorings %}
 [Better Commits - Part 3 - Review Changes]: {{site.url}}{% post_url 2017-09-09-better-commits-3-review-changes %}
+[Better Commits - Part 4 - Code Format Reloaded]: {{site.url}}{% post_url 2017-09-16-better-commits-4-code-format-reloaded %}

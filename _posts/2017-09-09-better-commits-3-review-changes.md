@@ -21,6 +21,7 @@ This post is part of a multi post series.
 - [Better Commits - Part 1 - Code Format][]
 - [Better Commits - Part 2 - Refactorings][]
 - [Better Commits - Part 3 - Review Changes][]
+- [Better Commits - Part 4 - Code Format Reloaded][]
 
 Don't get me wrong. I love code reviews. If you don't do code reviews, you should start today. Code reviews increase the chance of finding bugs before they get merged to master / dev. Code reviews improve class design. The reviewer has to understand the change. If the reviewer does'n understand it, then the design is obviously bad and should be improved. The reviewer can ask for clarification and the [code will be changed][] to clarify the topic for future readers. You can learn a lot from review remarks. The reviewer can remind you to stick with your team code guidelines.
 
@@ -73,6 +74,7 @@ Using this approach the reviewer only has to review changes applied after his re
 [Better Commits - Part 1 - Code Format]: {{site.url}}{% post_url 2017-08-11-better-commits-1-code-format %}
 [Better Commits - Part 2 - Refactorings]: {{site.url}}{% post_url 2017-08-31-better-commits-2-refactorings %}
 [Better Commits - Part 3 - Review Changes]: {{site.url}}{% post_url 2017-09-09-better-commits-3-review-changes %}
+[Better Commits - Part 4 - Code Format Reloaded]: {{site.url}}{% post_url 2017-09-16-better-commits-4-code-format-reloaded %}
 [code will be changed]: https://testing.googleblog.com/2017/06/code-health-too-many-comments-on-your.html
 [interactive Git rebase command]: https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History
 [Rebase]: https://git-scm.com/book/en/v2/Git-Branching-Rebasing
