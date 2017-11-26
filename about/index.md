@@ -20,7 +20,7 @@ ads: false
 	</div>
 	<div>
 		<p>
-			I'm a software engineer since 1998. I started using Turbo Pascal on DOS 5, powered by a insanely fast 16MHz Intel 386SX, and made my way through Basic, C, x86 assembler, C++, Perl, Ruby, Visual Basic to Java.
+			I'm Eduard Wirch, a software engineer since 1998. I started using Turbo Pascal on DOS 5, powered by a insanely fast 16MHz Intel 386SX, and made my way through Basic, C, x86 assembler, C++, Perl, Ruby, Visual Basic to Java.
 			I've always have been passionate about clean, stable and fast code. This blog collects noteworthy knowledge I gained along the way. Have fun reading them.
 		</p>
 		<p>
