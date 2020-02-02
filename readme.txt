@@ -1,7 +1,11 @@
-Site Generator: Jekyll jekyllrb.com
-Erfordert: Ruby, RubyGems (https://jekyllrb.com/docs/installation/#requirements)
+
+Erfordert:
+  - Ruby, RubyGems (https://jekyllrb.com/docs/installation/#requirements)
+  - ruby-bundler
+  - Site Generator: Jekyll jekyllrb.com
+
 GitHub erkennt automatisch Jekyll-Dateien und generiert die Seite selber.
-Vorlage: https://github.com/mmistakes/skinny-bones-jekyll/
+Vorlage: https://github.com/mmistakes/minimal-mistakes
 
 Seite bauen: bundle exec jekyll build
 Lokalen http-Server starten:
@@ -13,7 +17,10 @@ bundle update
 bundle install
 
 Links validieren:
-bundle exec htmlproofer ./_site/
+ - 'gem "html-proofer"' temporär zu Gemfile hinzufügen
+ - bundle install
+ - bundle exec htmlproofer ./_site --check-html --disable-external
+
 
 Erweiterte Markdown-Syntax
 ==========================
@@ -45,6 +52,3 @@ Interne Verlinkung mit Link Validierung
 ---------------------------------------
 {{site.url}}{% post_url 2017-09-09-better-commits-3-review-changes %}
 
-Inhaltsverzeichnis
-------------------
-{% include toc.html %}

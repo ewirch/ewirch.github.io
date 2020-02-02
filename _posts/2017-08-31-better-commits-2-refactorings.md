@@ -1,5 +1,4 @@
 ---
-layout: article
 title: "Better Commits - Part 2 - Refactorings"
 categories: articles
 date: 2017-08-31
@@ -7,11 +6,9 @@ modified: 2017-09-30
 tags: [scm, git, code-review, code-history]
 image:
   feature: 
-  teaser: /2017/08/better-commits2-teaser.png
-  path: /2017/08/better-commits2-teaser.png
+  teaser: /assets/images/2017/08/better-commits2-teaser.png
+  path: /assets/images/2017/08/better-commits2-teaser.png
   thumb: 
-ads: false
-comments: true
 ---
 
 

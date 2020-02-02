@@ -1,5 +1,4 @@
 ---
-layout: article
 title: "Linux Process Memory Layout"
 categories: articles
 date: 2013-11-20
@@ -7,17 +6,13 @@ modified: 2013-11-20
 tags: [java, core, linux, memory]
 image:
   feature: 
-  teaser: /2013/11/memory-layout.jpg
-  path: /2013/11/memory-layout.jpg
+  teaser: /assets/images/2013/11/memory-layout.jpg
+  path: /assets/images/2013/11/memory-layout.jpg
   thumb: 
-ads: false
-comments: true
 ---
 
 This article describes how the memory structure of each Linux process does look like.
 
-
-{% include toc.html %}
 
 Each Linux process starts with several memory blocks. A code block to hold the executable code of the program, stack blocks (one for each thread) and several data blocks (one for constants of the program, one for dynamic usage). Sometimes those blocks are called segments. In case of the data blocks we'll call them arenas in this article. This initial arena block is called the main arena. You'll see it named as "`[heap]`" in the contents of `/proc/xxx/maps` of any Linux process (replace xxx by PID).
 

@@ -1,5 +1,4 @@
 ---
-layout: article
 title: "Memory leaks even with WeakReferences"
 categories: articles
 date: 2013-12-18
@@ -7,11 +6,9 @@ modified: 2013-12-18
 tags: [java, memory, memory leaks, pitfalls]
 image:
   feature: 
-  teaser: /2013/12/leak.jpg
-  path: /2013/12/leak.jpg
+  teaser: /assets/images/2013/12/leak.jpg
+  path: /assets/images/2013/12/leak.jpg
   thumb: 
-ads: false
-comments: true
 ---
 
 A crash report arrived at my desk the other day. The system crashed because it ran out of memory. And the major memory consumer was a `WeakHashMap`. Very interesting, since `WeakHashMaps` are usually free memory when the content is not needed any more.

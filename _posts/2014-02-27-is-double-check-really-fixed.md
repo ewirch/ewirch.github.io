@@ -1,5 +1,4 @@
 ---
-layout: article
 title: "Is The Double-Check Idiom Really *Really* Fixed?"
 categories: articles
 date: 2014-02-27
@@ -7,11 +6,9 @@ modified: 2014-02-27
 tags: [java,core,cuncurrency,memory-model]
 image:
   feature: 
-  teaser: /2014/02/doublecheck.jpg
-  path: /2014/02/doublecheck.jpg
+  teaser: /assets/images/2014/02/doublecheck.jpg
+  path: /assets/images/2014/02/doublecheck.jpg
   thumb: 
-ads: false
-comments: true
 ---
 
 The double-check idiom is a way to reduce lock contention for a lazy initialized thread safe class. Unfortunately it used not to work. Luckily it was fixed. But under which conditions is it to be considered fixed?

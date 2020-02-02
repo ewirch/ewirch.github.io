@@ -1,5 +1,4 @@
 ---
-layout: article
 title: "Do We Have To Synchronize Everything?"
 categories: articles
 date: 2014-03-24
@@ -7,17 +6,13 @@ modified: 2014-03-24
 tags: [java, concurrency, core, jmm, memory-model, synchronization, threads]
 image:
   feature: 
-  teaser: /2014/03/synchronize.jpg
-  path: /2014/03/synchronize.jpg
+  teaser: /assets/images/2014/03/synchronize.jpg
+  path: /assets/images/2014/03/synchronize.jpg
   thumb: 
-ads: false
-comments: true
 ---
 
 Evaluation of [ThreadSafe][] made me think about the Java Memory Model and its implications on threaded programs.
 
-
-{% include toc.html %}
 
 ## The Problem
 

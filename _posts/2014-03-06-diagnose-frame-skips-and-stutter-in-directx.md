@@ -1,5 +1,4 @@
 ---
-layout: article
 title: "Diagnose Frame Skips And Stutter In DirectX Applications"
 categories: articles
 date: 2014-03-06
@@ -7,11 +6,9 @@ modified: 2014-03-06
 tags: [directx, dwm, dxgi, frame-skip, gpuview, opengl, performance, stutter, wpa, wpr]
 image:
   feature: 
-  teaser: /2014/03/stutter.jpg
-  path: /2014/03/stutter.jpg
+  teaser: /assets/images/2014/03/stutter.jpg
+  path: /assets/images/2014/03/stutter.jpg
   thumb: 
-ads: false
-comments: true
 ---
 
 User experience of games and multi media applications is highly bound to a feeling of smoothness. This smoothness feeling is quickly lost when
@@ -96,20 +93,20 @@ It's possible you're your own enemy, if you try to do network or file system ope
 ## Blocked by the System
 Let's have a look at a simple application which does some basic DirectX operations. There is not much CPU load. There is little GPU load. Usually the applications runs at constant 60 fps. But from time to time it skips a frame. I recorded a event trace and loaded it in GPUView. First I have to find the position in the trace where the frame skip occurs. There's a nice shortcut for this. Locate the row with your application's process and enable the 'Present Chart' (Charts > Toggle Present Chart). Have a look in the Latency lane and watch out for spikes:
 
-![latency spikes](/images/2014/03/spikes.png)
+![latency spikes](/assets/images/2014/03/spikes.png)
 
 I select the spike and press CTRL-Z to zoom into selection. Now I enable vsync events (F8) and disable the 'Present Chart' again. The result looks like this:
 
-![delayed frame](/images/2014/03/delayed-frame.png)
+![delayed frame](/assets/images/2014/03/delayed-frame.png)
 
 You see three horizontal lanes. The first is the graphic queue of the process. The next two are the two threads running in the application. There are five frames in the screenshot, the blue lines being the vsync events. Three frames look healthy. Little work in the threads, a couple of graphic command packages quickly processed. But in one of the frames the present package (cross-hatched) is kept unusually long in the process queue. Usually the command packets are moved from the process queue to the graphic card queue by the system video scheduler when there's room in the hardware queue. Here's a screenshot of the same time period (I increased the zoom a little bit) including the graphics queue.
 
-![graphics queue](/images/2014/03/graphic-queue.png)
+![graphics queue](/assets/images/2014/03/graphic-queue.png)
 
 In the first frame on this screenshot the present packet is moved nearly instantly into to the hardware queue and is processed quickly. But in the next frame it remains in the process queue for some reason and is moved and processed not until the third frame.
 The video scheduler thread is hosted by the System process. Here's a 'healthy' frame zoomed in to show about 3ms after the vsync event.
 
-![system at work](/images/2014/03/system-at-work.png)
+![system at work](/assets/images/2014/03/system-at-work.png)
 
 You see the hardware lane (blue), the test application `Source.exe`, the System process and the Desktop Window Manager (`dwm.exe`) process. The name of the visible thread in the System lane is already a hint to what it does: 'VidSchiWorkerThread'. If you look accurately you see how this thread moves the graphic command packets. Shortly after `dwm.exe` added a packet to its queue (light-brown), the video scheduler wakes up and moves the packet to the hardware lane (Light-brown in the blue lane.) The packet remains in the process lane (green) until its completely processed by the hardware. The video scheduler goes to sleep again and wakes up when `Source.exe` added a command packet to its queue (blue-greenish). It's moved to the hardware queue nearly immideately. Then again, it wakes up when the 'present' packet (cross-hatched) was added to the process queue. But the hardware queue (blue) currently contains already two packets so the scheduler goes to sleep again and wakes up as the GPU finished the `dwm.exe` packet. The 'present' packet is moved to the GPU queue.
 
@@ -150,7 +147,7 @@ This time it was waiting for completion (`VidSchWaitForCompletionEvent`). As alr
 
 Next I want to see how the bad frame looks like:
 
-![bad frame](/images/2014/03/badframe.png)
+![bad frame](/assets/images/2014/03/badframe.png)
 
 The `VidSchiWorkerThread` was woken up six times in this frame. It woke up for the first time when `dwm.exe` added a packet to its queue. It also started adjustment of its own priority for some reason (`VidSchiAdjustWorkerThreadPriority`). When it was woken up for the second time, it finished the priority adjustment and went to sleep again. The third time it was woken up when `Source.exe` added a packet to its queue. It finished its work and went to sleep again. The fourth time it was woken up by the new 'present' packet. But the GPU queue was full so it went to sleep again, this time waiting for completion of the packet being processed by the GPU. Just like in the 'good' frame. But when it woke up for the fifth time, it did not move the present packet to the GPU queue. Even though there was room for a new packet it went to sleep again waiting for something. The stack trace of the sixth packet shows what it was waiting for:
 
@@ -172,7 +169,7 @@ The `VidSchiWorkerThread` was woken up six times in this frame. It woke up for t
 
 It's waiting for an empty GPU queue (`VidSchiWaitForEmptyHwQueue`). And `VidSchiHandleControlEvent` was the reason it started to wait for a empty GPU queue. So there arrived some kind of a control command which made the scheduler clear the GPU queue. But that's not the end. The 'present' packet remained in the software queue until the end of the frame. Just after the next vsync the scheduler thread wakes up:
 
-![directly after vsync](/images/2014/03/directlyaftervsync.png)
+![directly after vsync](/assets/images/2014/03/directlyaftervsync.png)
 
 In the stack trace I can see what it was waiting for:
 
@@ -194,11 +191,11 @@ In the stack trace I can see what it was waiting for:
 
 The control command required even the flip queue to run completely dry. It looks like it was some kind of 'flush GPU' command. But what did request this flush? In the screenshots above there was a collapsed process (`csrss.exe`) which I made visible for the next screenshot. It's the beginning of the bad frame again:
 
-![csrss begin](/images/2014/03/csrss-begin.png)
+![csrss begin](/assets/images/2014/03/csrss-begin.png)
 
 You see that `csrss.exe` executed something before the video scheduler started to flush the GPU. Unfortunately I can't tell from this CPU time slice what `csrss.exe` did. The event trace contains only the stack of when the thread woke up. And that didn't reveal anything about what `csrss.exe` was about to do. If I was lucky the sampled stack collector was active at exactly this time point so I'd see the stack trace of `csrss.exe` in the 'CPU Usage (Sampled)' in WPA. But I was not lucky. The information I was looking for was in the next CPU time slice of `csrss.exe` which also woke up after the next vsync:
 
-![csrss end](/images/2014/03/csrss-end.png)
+![csrss end](/assets/images/2014/03/csrss-end.png)
 
 When I clicked the small handle of the `csrss.exe` CPU time slice GPUView showed me that the System video scheduler thread did ready the `csrss.exe` thread. The small white triangle indicates this. In other words: the video scheduler did unlock something what the `csrss.exe` thread was waiting for (to learn more about wait analysis read this great article by Bruce Dawson: [Xperf Wait Analysis–Finding Idle Time]). The video scheduler did this after the GPU flush completed, so `csrss.exe` was waiting for the GPU flush. And indeed the stack trace of `csrss.exe` contains the next hint:
 
@@ -220,15 +217,15 @@ When I clicked the small handle of the `csrss.exe` CPU time slice GPUView showed
 
 `SetGammaRamp` was a blocking call for `csrss.exe`. So maybe it did also block the process which called `csrss.exe`. If it did, I would see the culprit wake up after `csrss.exe` with its stack trace some where around a 'gamma ramp'. I use GPUView to determine the time stamps where this all happened. Like the time when the the video scheduler woke up. In WPA I select the 'CPU Usage (Precise) Timeline by Process' view. The precise CPU view contains stack traces of the threads when they wake up. Right click in the graph area and choose 'Select Time Range...'. Then right click 'Zoom'. The view zooms to the time range. Here's what I saw:
 
-![processes in wpa](/images/2014/03/wpa-processes.png)
+![processes in wpa](/assets/images/2014/03/wpa-processes.png)
 
 I saw the first slice of the system video scheduler thread (this was right after the vsync event); it readied `csrss.exe`. `csrss.exe` did some work and went to sleep for two times. It looks like `csrss.exe` readied either `dmw.exe` or `flux.exe`. I verified this by looking at the 'ReadyingProcess' column in the tabular view (you can adjust the visible columns by clicking the cog icon in the graph head line right to the graph name). It looks like `csrss.exe` did ready both threads:
 
-![csrss redying](/images/2014/03/csrss-redying.png)
+![csrss redying](/assets/images/2014/03/csrss-redying.png)
 
 Examining the stack traces (don't forget to setup symbol path and tell WPA to load symbols (Trace->Load Symbols)) showed that `dwm.exe` was waiting for shared access to the graphical device to do some frame statistics. Looks harmless. `flux.exe` on the other hand, had this wake up stack trace:
 
-![flux stack trace](/images/2014/03/flux.png)
+![flux stack trace](/assets/images/2014/03/flux.png)
 
 (Note that WPA presents the stack traces the other way round as GPUView. The oldest frame is at the top and the youngest frame is at the bottom. So upper frames invoked lower frames.)
 

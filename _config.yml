@@ -2,61 +2,99 @@
 
 title: int13
 description: "A place for knowledge, software craftsmanship, performance and stability."
-logo: 120x120.gif
-teaser: 400x250.gif
-locale: en_US
+locale: "en-US"
 url: https://ewirch.github.io
-analytics: true
+github_username: ewirch
+repository: "ewirch/ewirch.github.io"
+minimal_mistakes_skin: default
+search: true
+
+
+# Build settings
+markdown: kramdown
+remote_theme: "mmistakes/minimal-mistakes@4.18.1"
+# Outputting
+permalink: /:year/:month/:title.html
+paginate: 5 # amount of posts to show
+paginate_path: /page:num/
+timezone: Europe/Berlin
 
 # Jekyll configuration
 
-sass:
-  sass_dir: _sass
-  style: compressed
-permalink: /:year/:month/:title.html
-kramdown:
-  toc_levels: 1..2
-highlighter: rouge
-gems:
-  - jekyll-sitemap
-#  - jekyll-gist
-  - jekyll-feed
+include:
+  - _pages
 
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-include-cache
 
 # Site owner
-owner:
+author:
   name: Eduard Wirch
-  web: https://ewirch.github.io/
-  email: wirch.eduard@gmail.com
-  avatar: bio-photo.jpg # 160x160 px image for author byline
+  avatar: "/assets/images/bio-photo.jpg"
+  location: "Berlin, Germany"
+  #  bio    : "My awesome biography constrained to a sentence or two goes here."
+  links:
+    - label: Email
+      icon: "fas fa-fw fa-envelope-square"
+      url: "mailto:wirch.eduard@gmail.com"
+    - label: GitHub
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/ewirch"
+    - label: Stack Overflow
+      icon: "fab fa-fw fa-stack-overflow"
+      url: "https://stackoverflow.com/users/17428/eduard-wirch"
+    - label: Linkedin
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/eduard-wirch-a87099157/"
+footer:
+  links:
+    - label: Email
+      icon: "fas fa-fw fa-envelope-square"
+      url: "mailto:wirch.eduard@gmail.com"
+    - label: GitHub
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/ewirch"
+    - label: Stack Overflow
+      icon: "fab fa-fw fa-stack-overflow"
+      url: "https://stackoverflow.com/users/17428/eduard-wirch"
+    - label: Linkedin
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/eduard-wirch-a87099157/"
+
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: false
+      read_time: true
+      comments: true
+      share: true
+      related: true
+  # _pages
+  - scope:
+      path: "_pages"
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+
+tag_archive:
+  type: liquid
+  path: /tags/
+
+comments:
+  provider: "disqus"
+  disqus:
+    shortname: "ewirch"
+
+nalytics:
+  provider: "google-gtag"
   google:
-    plus: +EduardWirch
-  disqus-shortname: ewirch
+    tracking_id: "UA-61571226-1"
+    anonymize_ip: false # default
 
-
-include:
-  - .htaccess
-exclude:
-  - "*.less"
-  - "*.sublime-project"
-  - "*.sublime-workspace"
-  - .asset-cache
-  - .bundle
-  - .jekyll-assets-cache
-  - .sass-cache
-  - CHANGELOG
-  - Capfile
-  - Gemfile
-  - Gruntfile.js
-  - LICENSE
-  - README
-  - Rakefile
-  - config
-  - gulpfile.js
-  - lib
-  - log
-  - node_modules
-  - package.json
-  - spec
-  - tmp
-  - readme.txt

@@ -1,5 +1,4 @@
 ---
-layout: article
 title: "Java Polymorphism And equals()"
 categories: articles
 date: 2014-01-29
@@ -7,12 +6,10 @@ modified: 2014-01-29
 tags: [java,core,polymorphism]
 image:
   feature: 
-  teaser: /2014/01/equals.jpg
-  path: /2014/01/equals.jpg
+  teaser: /assets/images/2014/01/equals.jpg
+  path: /assets/images/2014/01/equals.jpg
   thumb: 
-ads: false
 excerpt: How should equals() behave in case of polymorphic classes? What are the pitfalls here?
-comments: true
 ---
 
 Let's start by having a small introduction. The mother of all Java classes -- `Object` -- does define a `equals()` method, which is meant to return true if the passed instance is equal to the current instance. The default implementation is limited to comparing references. So it will only return `true` when the current and the passed object are the same. The `equals()` method is meant to be overridden by extending classes with meaningful logic. The implementation has to obey some requirements (from javadoc on [Object.equals()]):
@@ -180,4 +177,4 @@ Don't forget to implement `hashCode()` if you override `equals()`. Both methods 
 [does not override]: https://stackoverflow.com/questions/10568772/overloaded-and-overridden-in-java
 [polymorphism]: https://en.wikipedia.org/wiki/Polymorphism_%28computer_science%29
 [documentation of getClass()]: https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#getClass%28%29
-[equals()]: http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/java/util/AbstractMap.java#AbstractMap.equals%28java.lang.Object%29
+[equals()]: https://docs.oracle.com/javase/8/docs/api/java/util/AbstractMap.html#equals-java.lang.Object-

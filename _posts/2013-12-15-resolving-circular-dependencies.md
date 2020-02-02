@@ -1,5 +1,4 @@
 ---
-layout: article
 title: "Resolving circular dependencies in C++"
 categories: articles
 date: 2013-12-15
@@ -7,11 +6,9 @@ modified: 2013-12-15
 tags: [c++, code style]
 image:
   feature: 
-  teaser: /2013/12/circular.jpg
-  path: /2013/12/circular.jpg
+  teaser: /assets/images/2013/12/circular.jpg
+  path: /assets/images/2013/12/circular.jpg
   thumb: 
-ads: false
-comments: true
 ---
 I stumbled several times already upon situations where I created a circular dependency between two classes. A circular dependency is bad design in general.
 

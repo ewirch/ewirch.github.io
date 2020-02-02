@@ -1,5 +1,4 @@
 ---
-layout: article
 title: "Better Commits - Part 3 - Review Changes"
 categories: articles
 date: 2017-09-09
@@ -7,11 +6,9 @@ modified: 2017-09-09
 tags: [scm, git, code-review, code-history]
 image:
   feature: 
-  teaser: /2017/09/better-commits3-teaser.jpg
-  path: /2017/09/better-commits3-teaser.jpg
+  teaser: /assets/images/2017/09/better-commits3-teaser.jpg
+  path: /assets/images/2017/09/better-commits3-teaser.jpg
   thumb: 
-ads: false
-comments: true
 ---
 
 In our team we're doing code reviews. But they tend to render the commit history messy.

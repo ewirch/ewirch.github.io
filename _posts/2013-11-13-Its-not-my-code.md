@@ -1,5 +1,4 @@
 ---
-layout: article
 title: "It’s not my code! I googled it."
 categories: articles
 date: 2013-11-13
@@ -7,11 +6,9 @@ modified: 2017-04-20
 tags: [code style, eclipse, java, sonar]
 image:
   feature: 
-  teaser: /2013/11/its-not-my-code.jpg
-  path: /2013/11/its-not-my-code.jpg
+  teaser: /assets/images/2013/11/its-not-my-code.jpg
+  path: /assets/images/2013/11/its-not-my-code.jpg
   thumb: 
-ads: false
-comments: true
 ---
 
 Actually this blog post is not about Google. And it is even not about copying code. But it is indeed about code which I did not write.
@@ -19,7 +16,7 @@ Actually this blog post is not about Google. And it is even not about copying co
 
 Since a couple days we use [SonarQube](https://www.sonarqube.org/) to check our code for coding style or conventions violations. Well this is not that new. We used to use Checkstyle, PMD, Findbugs already for a couple of years. But the switch to Sonar brought the heap of violations in our code up my mind again. Sonar says we have around 3000-5000 violations in our projects. Probably the most of them are eligible. But some of them are not:
 
-![equals fail]({{site.url}}/images/2013/11/equals-fault.png)
+![equals fail]({{site.url}}/assets/images/2013/11/equals-fault.png)
 
 Here you see some of the violations found in the `Configuration` class in the `equals()` method. Nearly each line has a violation. The problem is: `equals()` is a automatically generated method. Coding conventions violations in generated code are just useless. Generated code doesn’t has to be maintainable. It doesn’t has to be readable.
 

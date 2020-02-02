@@ -1,5 +1,4 @@
 ---
-layout: article
 title: "Better Commits - Part 4 - Code Format Reloaded"
 categories: articles
 date: 2017-09-16
@@ -7,12 +6,10 @@ modified: 2017-09-16
 tags: [scm, git, code-review, code-history]
 image:
   feature: 
-  teaser: /2017/08/better-commits1-teaser.png
-  path: /2017/08/better-commits1-teaser.png
-  hight: 130
+  teaser: /assets/images/2017/08/better-commits1-teaser.png
+  path: /assets/images/2017/08/better-commits1-teaser.png
+  height: 130
   thumb: 
-ads: false
-comments: true
 ---
 
 In [Better Commits - Part 1 - Code Format][part1] I introduced a script which commits the code format changes separately from the logic changes. Consequently committing the format separately makes code easier to review, the history easier to read and even easier rebasing/merging (in case of conflicts due to format changes). Sadly the process introduced by the script had it's own problems.
@@ -61,7 +58,7 @@ void method(final int param1,
 
 Suddenly 9 lines changed because of one new parameter. The new process requires you to change your behavior while coding. 
 
-![one does not simly format the whole source file]({{site.url}}/images/2017/08/one-does-not-simply.jpg)
+![one does not simly format the whole source file]({{site.url}}/assets/images/2017/08/one-does-not-simply.jpg)
 
 You simply don't reformat the code or format just single lines or blocks if it's appropriate (CTRL-ALT-L in IntelliJ IDEA while you have the lines selected which should be formatted). Small changes to existing lines remain mostly unformatted. The change from the example above would lead to this code:
 

@@ -1,5 +1,4 @@
 ---
-layout: article
 title: "Diagnose OpenGL Performance Problems"
 categories: articles
 date: 2014-01-21
@@ -7,11 +6,9 @@ modified: 2014-01-21
 tags: [opengl, performance, fill rate limitation, gpuview, wpr]
 image:
   feature: 
-  teaser: /2014/01/rainbow-cubes.jpg
-  path: /2014/01/rainbow-cubes.jpg
+  teaser: /assets/images/2014/01/rainbow-cubes.jpg
+  path: /assets/images/2014/01/rainbow-cubes.jpg
   thumb: 
-ads: false
-comments: true
 ---
 
 I stumbled upon an interesting OpenGL slow down issue on [stackoverflow.com: Curious slowdown in opengl when using instanced rendering][stack-question]. The author created a program which would render 20 x 20 x 20 cubes in two different ways: [indexed drawing][indexed-drawing] and [instanced drawing][instanced-drawing]. When using indexed drawing performance seemed fine. But after switching to instanced drawing it broke down. But only in a special case. As described by the question author:
@@ -78,12 +75,12 @@ Next step was to create a system event trace file. This would not only tell me w
 
 I enabled "GPU activity" and "Video glitches" profiles in wpr, recorded a session of the slow running program and opened it with GPUView (also part of the Windows 8.1 SDK). The [GPUView project site] of Matt Fisher describes nicely how to read GPUView output. Here is a screen shot from GPUView's output generated from the recorded event trace:
 
-![GPUView screenshot 1](/images/2014/01/gpuview1.png)
+![GPUView screenshot 1](/assets/images/2014/01/gpuview1.png)
 
 The light green lane is the test process having enormous rendering problems. The darker green parts are GPU command packets queued up in the process. The gray strip at the bottom is the CPU time consumed by the process. Since you see only thin black lines means the process is hardly consuming CPU time. But it heavily uses GPU. At the top you see a ruler. One tick of the ruler is about 100ms. The top blue lane is the graphics card and the hardware queue of command packets. The dark green packets are packets from the test process which are moved from software to hardware when there is room in the hardware queue. So it takes the GPU around 100ms to process one dark green packet!
 The red packets are from the idle process and the brown from the `dwm.exe` process. Don't get confused by the size of the red and the brown packets. One needs to get used to the presentation type of GPUView. The packet in the pottom row of the hardware queue is the packet being processed. This packet determines the width of the whole (!) column. When it's the turn of the red and the brown packet to be processed, they are so fast, that you never see them in the bottom row. Here's a screen shot zoomed in onto one of those red packets:
 
-![Zoom to red packet](/images/2014/01/GPUView-redpacket.png)
+![Zoom to red packet](/assets/images/2014/01/GPUView-redpacket.png)
 
 The ruler ticks are now one ms. Once it's turn for the red packet to be processed, it finishes in less than 1ms.
 
@@ -93,11 +90,11 @@ The next step in finding the problem is ninja debugging. Cut away anything which
 
 Finally my rewrite reached the complexity of the original program without triggering the problem. I started to replace parts of the original program with parts from my program. After I replaced the lattice calculation I noticed a strange cube right in the center of the grid. The grid in the original program was aligned in a way that the camera would face the center of a cube:
 
-![centered cube](/images/2014/01/cube-center.png)
+![centered cube](/assets/images/2014/01/cube-center.png)
 
 But in my rewrite I placed the camera between the rows and colums:
 
-![camera in between](/images/2014/01/cube-between.png)
+![camera in between](/assets/images/2014/01/cube-between.png)
 
 The strange cube was there in both versions. But in my rewrite it got visible. The performance dropped when the camera moved towards this cube.
 

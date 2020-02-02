@@ -1,5 +1,4 @@
 ---
-layout: article
 title: "Be Careful When Combining Collections of Different Type"
 categories: articles
 date: 2015-04-12
@@ -7,11 +6,9 @@ modified: 2015-04-12
 tags: [java, core, collections, pitfall]
 image:
   feature: 
-  teaser: /2015/04/collection.jpg
-  path: /2015/04/collection.jpg
+  teaser: /assets/images/2015/04/collection.jpg
+  path: /assets/images/2015/04/collection.jpg
   thumb: 
-ads: false
-comments: true
 ---
 
 Sometimes the runtime speed of collection methods can vary extremely when called with different `Collection` implementations. But why?

@@ -1,5 +1,4 @@
 ---
-layout: article
 title: "Concurrent Linux Memory Allocation Performance/Scalability"
 categories: articles
 date: 2015-04-17
@@ -7,11 +6,9 @@ modified: 2015-04-17
 tags: [tags]
 image:
   feature: 
-  teaser: /2014/03/stutter.jpg
-  path: /2014/03/stutter.jpg
+  teaser: /assets/images/2014/03/stutter.jpg
+  path: /assets/images/2014/03/stutter.jpg
   thumb: 
-ads: false
-comments: true
 ---
 
 Teaser:
