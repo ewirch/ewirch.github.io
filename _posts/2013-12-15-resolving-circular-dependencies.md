@@ -10,9 +10,9 @@ image:
   path: /assets/images/2013/12/circular.jpg
   thumb: 
 ---
-I stumbled several times already upon situations where I created a circular dependency between two classes. A circular dependency is bad design in general.
+I stumbled several times already upon situations where I created a circular dependency between two classes. A circular dependency is a code smell.
 
-It increases coupling between classes and thus makes changes more difficult ([Circular dependency - Wikipedia][wikipedia]). But in some languages (for example Java) it's possible to create classes which depend on each other without compiler errors. So very often circular dependencies are created and used without noticing. Differently for C++. The strict processing order of C++ compilers will spill out a bunch of errors when you try to make two classes depend on each other.
+It increases coupling between classes and thus makes changes more difficult ([Circular dependency - Wikipedia][wikipedia]), but in some languages (for example Java) it's possible to create classes which depend on each other without compiler errors. So very often circular dependencies are created and used without noticing. Differently for C++. The strict processing order of C++ compilers will spill out a bunch of errors when you try to make two classes depend on each other.
 But you surely had a reason for this attempt. So how you achieve your aim whilst avoiding a circular dependency? See this example of a thread safe, usage based, load balanced object pool implementation:
 
 ```c++
@@ -159,13 +159,11 @@ public:
 This example suffers from two problems: 
 
 1. The obvious one: The example doesn't compile. My compiler issues the error `'ObjectPool' does not name a type`. This arises from the attempt to create a circular dependency: `ObjectPool` depends on `Element`, and `Element` depends on `ObjectPool`.
-1. A a very subtle problem: The reference to the `ObjectPool` instance is made public to the `Entry` instance before the constructor of the `ObjectPool` class finished initializing the instance. This is known as early reference leak and should be avoided ([Java theory and practice: Safe construction techniques][safe-constructor-techniques], [Should you use the this pointer in the constructor?][should-i-use-this-pointer]).
+1. A very subtle problem: The reference to the `ObjectPool` instance is made public to the `Entry` instance before the constructor of the `ObjectPool` class finished initializing the instance. This is known as early reference leak and should be avoided ([Java theory and practice: Safe construction techniques][safe-constructor-techniques], [Should you use the this pointer in the constructor?][should-i-use-this-pointer]).
 
-// FIXME: "first"? the second problem is not touched
+Let's first have a look at what we actually are trying to achieve here. The `ObjectPool` class manages a specified amount of entries. For each entry a usage count is maintained. The user can call `take()` to receive the entry with the lowest usage count. The `ObjectPool` class will use a lock to synchronize `take()` and `release()` invocations so it can be used safely in a threaded context. Once the user is done using an entry he invokes `release()` on the entry which then invokes `release()` on its parent which does a synchronized release. So how do we resolve the circular dependency while preserving the logic?
 
-Let's first have a look at what we actually are trying to achieve here. The ObjectPool class manages a specified amount of entries. For each entry a usage count is maintained. The user can call `take()` to receive the entry with the lowest usage count. The `ObjectPool` class will use a lock to synchronize `take()` and `release()` invocations so it can be used safely in a threaded context. Once the user is done using a entry he invokes `release()` on the entry which then invokes `release()` on its parent which does a synchronized release. So how do we resolve the circular dependency while preserving the logic?
-
-The solution is to decouple the `ObjectPool` and the `Element` class. I'll show here how to decouple both using a interface. The idea is, the `Element` class doesn't has to know the whole implementation of the `ObjectPool` class. It only needs to know the `release()` method. So we create a interface containing the release method and let `ObjectPool` implement the interface. Then we tell `Entry` only about the interface but not the `ObjectPool` class.
+The solution is to decouple the `ObjectPool` and the `Element` class. I'll show here how to decouple both using an interface. The idea is, the `Element` class doesn't have to know the whole implementation of the `ObjectPool` class. It only needs to know the `release()` method. So we create an interface containing the release method and let `ObjectPool` implement the interface. Then we tell `Entry` only about the interface but not the `ObjectPool` class.
 
 Here is the interface:
 
